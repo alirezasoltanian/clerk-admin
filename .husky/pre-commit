@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "This is from Huskys pre-commit 💫"
+
+# npx pretty-quick --staged
+
+npx lint-staged
+
+echo "This is from Huskys pre-commit 🛠️"
