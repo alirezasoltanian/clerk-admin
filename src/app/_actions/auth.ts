@@ -49,7 +49,7 @@ export const SignInClerk = async (data: {
   password: string
 }): Promise<any> => {
   const res = await configPostFetch<ReturnSignin>({
-    endpoint: `/admin/clerk/login`,
+    endpoint: `/website/admin/clerk/login`,
     cache: 'no-cache',
     tags: ['loginClerk'],
     variables: data,
@@ -77,7 +77,7 @@ export const SignInClerk = async (data: {
 
 export const signUpClerkAction = async (data: SignUpType) => {
   const res = await configPostFetch({
-    endpoint: `/admin/clerk/register/`,
+    endpoint: `/website/admin/clerk/register/`,
     cache: 'no-cache',
     variables: data,
   })
@@ -87,7 +87,7 @@ export const signUpClerkAction = async (data: SignUpType) => {
 
 export const clerkCheckForm = async (data: ClerkCheck) => {
   const res = configPostWithAuthFetch({
-    endpoint: `/admin/clerk/`,
+    endpoint: `/website/admin/clerk/`,
     cache: 'no-cache',
     variables: data,
   })

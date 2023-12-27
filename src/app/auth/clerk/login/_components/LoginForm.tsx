@@ -1,5 +1,7 @@
 'use client'
 
+import { SignInClerk } from '@/app/_actions/auth'
+import { Icons } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import InputForm from '@/components/ui/InputForm'
@@ -32,7 +34,15 @@ export function LoginForm() {
     },
   })
   const onSubmit = async (data: SignInType) => {
-    toast.message('ok')
+    startTransition(async () => {
+      const resStatus = await SignInClerk(data)
+      if (resStatus === 202) {
+        toast.success('login successfully')
+        // router.push("/architect/account");
+      } else {
+        toast.error('password & username not correct')
+      }
+    })
   }
 
   return (
@@ -57,10 +67,10 @@ export function LoginForm() {
           <Button disabled={isPending || isLoading} type="submit">
             {isPending ? (
               <div className="flex">
-                {/* <Icons.spinner
-                  className='mr-2 h-4 w-4 animate-spin'
-                  aria-hidden='true'
-                /> */}
+                <Icons.spinner
+                  className="mr-2 h-4 w-4 animate-spin"
+                  aria-hidden="true"
+                />
                 <span className="">loading ...</span>
               </div>
             ) : (

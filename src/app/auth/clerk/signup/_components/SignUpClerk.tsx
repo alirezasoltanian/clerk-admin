@@ -1,5 +1,6 @@
 'use client'
 
+import { signUpClerkAction } from '@/app/_actions/auth'
 import { Icons } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
@@ -25,7 +26,19 @@ function SignUpClerk() {
     },
   })
   const onSubmit = async (data: SignUpType) => {
-    toast.message('ok')
+    setIsPending(true)
+
+    const res = await signUpClerkAction(data)
+    if (res.status === 200) {
+      // console.log(res);
+      toast.success(res.body.message)
+
+      // router.push("/sign-in");
+      router.back()
+    } else {
+      toast.error(res.body.message)
+    }
+    setIsPending(false)
   }
   const searchParams = useSearchParams()
 
