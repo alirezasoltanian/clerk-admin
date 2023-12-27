@@ -4,6 +4,7 @@ import { Icons } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import InputForm from '@/components/ui/InputForm'
+import { signUpSchema, SignUpType } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -11,19 +12,6 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-
-const signUpSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  email: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  password: z.string().min(3, {
-    message: 'password must be at least 3 characters.',
-  }),
-})
-type SignUpType = z.infer<typeof signUpSchema>
 
 function SignUpClerk() {
   const router = useRouter()
