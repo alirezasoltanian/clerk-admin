@@ -36,13 +36,22 @@ export default async function SignUpPage() {
             <div className="text-sm text-muted-foreground">
               {"Don't you already have an account? Call Officers"}
             </div>
-            <Link
-              aria-label="Sign up"
-              href="/auth/admin/login"
-              className="text-primary mt-2 text-sm underline-offset-4 transition-colors hover:underline"
-            >
-              Forgot password
-            </Link>
+            <div className="flex flex-col gap-1">
+              <Link
+                aria-label="Sign up"
+                href="/auth/admin/login"
+                className="text-primary mt-2 text-sm underline-offset-4 transition-colors hover:underline"
+              >
+                Forgot password
+              </Link>
+              <Link
+                aria-label="Sign up"
+                href="/auth/clerk/login"
+                className="text-primary mt-2 text-sm underline-offset-4 transition-colors hover:underline"
+              >
+                Login as Clerk
+              </Link>
+            </div>
           </div>
         </CardFooter>
       </Card>

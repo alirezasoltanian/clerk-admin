@@ -49,7 +49,7 @@ export const SignInClerk = async (data: {
   password: string
 }): Promise<any> => {
   const res = await configPostFetch<ReturnSignin>({
-    endpoint: `/website/admin/clerk/login`,
+    endpoint: `/website/admin/clerk/login/`,
     cache: 'no-cache',
     tags: ['loginClerk'],
     variables: data,

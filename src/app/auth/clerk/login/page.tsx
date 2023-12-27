@@ -56,7 +56,7 @@ export default async function SignUpPage() {
                 href="/auth/admin/login"
                 className="text-primary mt-2 text-sm underline-offset-4 transition-colors hover:underline"
               >
-                Sing in as Admin
+                Login as Admin
               </Link>
             </div>
           </div>

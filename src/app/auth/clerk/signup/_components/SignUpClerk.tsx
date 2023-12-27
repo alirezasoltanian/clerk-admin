@@ -29,14 +29,14 @@ function SignUpClerk() {
     setIsPending(true)
 
     const res = await signUpClerkAction(data)
-    if (res.status === 200) {
+    if (res.status === 201) {
       // console.log(res);
       toast.success(res.body.message)
 
       // router.push("/sign-in");
-      router.back()
+      // router.back()
     } else {
-      toast.error(res.body.message)
+      toast.error('Something went wrong, try again')
     }
     setIsPending(false)
   }
