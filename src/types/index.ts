@@ -1,3 +1,4 @@
+import { Icons } from '@/components/icons'
 import { z } from 'zod'
 
 export interface UserInformation {
@@ -39,3 +40,16 @@ export const clerckForm = z.object({
 })
 
 export type ClerkCheck = z.infer<typeof signUpSchema>
+export type SidebarNavItem = NavItemWithChildren
+export interface NavItemWithChildren extends NavItem {
+  items: NavItemWithChildren[]
+}
+export interface NavItem {
+  title: string
+  href?: string
+  disabled?: boolean
+  external?: boolean
+  icon?: keyof typeof Icons
+  label?: string
+  description?: string
+}
