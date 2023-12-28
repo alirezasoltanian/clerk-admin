@@ -37,8 +37,16 @@ export const clerckForm = z.object({
     .refine((date) => new Date(date) < new Date(), {
       message: 'Birthday must be in the past',
     }),
+  image: z.unknown(),
 })
 
+export type ClerkFormValidation = z.infer<typeof clerckForm>
+export type ClerkForm = {
+  name: string
+  description: string
+  birthday: string
+  image: string
+}
 export type ClerkCheck = z.infer<typeof signUpSchema>
 export type SidebarNavItem = NavItemWithChildren
 export interface NavItemWithChildren extends NavItem {
