@@ -1,5 +1,6 @@
 'use client'
 
+import { clerkFormAction } from '@/app/_actions/clerk'
 import { Icons } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -27,6 +28,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
@@ -43,11 +45,17 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
     },
   })
 
-  const onSubmit = (data: z.infer<typeof clerckForm>) => {
+  const onSubmit = async (data: z.infer<typeof clerckForm>) => {
     const sendData = {
       ...data,
       image: '',
     }
+
+    const res = await clerkFormAction(sendData)
+
+    console.log(res)
+
+    toast.message(res.body.message)
   }
   function deleteProfile() {
     startTransition(async () => {

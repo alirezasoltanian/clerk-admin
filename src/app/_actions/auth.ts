@@ -84,13 +84,3 @@ export const signUpClerkAction = async (data: SignUpType) => {
   console.log('clerk signup', res)
   return res
 }
-
-export const clerkCheckForm = async (data: ClerkCheck) => {
-  const res = configPostWithAuthFetch({
-    endpoint: `/website/admin/clerk/`,
-    cache: 'no-cache',
-    variables: data,
-  })
-  console.log('clerk check', res)
-  return res
-}

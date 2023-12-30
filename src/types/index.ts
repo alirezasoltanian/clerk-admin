@@ -34,7 +34,7 @@ export const clerckForm = z.object({
     .refine((date) => !isNaN(Date.parse(date)), {
       message: 'Invalid date format',
     })
-    .refine((date) => new Date(date) < new Date(), {
+    .refine((date) => new Date(date) >= new Date(), {
       message: 'Birthday must be in the past',
     }),
 })
