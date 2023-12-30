@@ -1,8 +1,10 @@
 'use client'
 
+import { Icons } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
@@ -24,7 +26,7 @@ import { CalendarIcon, Download } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { Form, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
@@ -41,7 +43,12 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
     },
   })
 
-  const onSubmit = (data: z.infer<typeof clerckForm>) => {}
+  const onSubmit = (data: z.infer<typeof clerckForm>) => {
+    const sendData = {
+      ...data,
+      image: '',
+    }
+  }
   function deleteProfile() {
     startTransition(async () => {
       // try {
@@ -62,7 +69,7 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
   return (
     <div>
       <div className="relative w-fit h-fit">
-        <div className="  md:w-32 md:h-32 w-20 h-20 bg-slate-400 shadow-md  relative rounded-full border-2 overflow-hidden border-white -mt-16 ml-5 ">
+        <div className="  md:w-32 md:h-32 w-20 h-20 bg-slate-400 shadow-md  relative rounded-full border-2 overflow-hidden border-white  mt-8 mb-8">
           <Image
             width={100}
             height={100}
@@ -72,7 +79,7 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
                 : '/placeholder.png'
             }
             alt="image of social profile"
-            className="object-cover w-full h-full"
+            className="object-cover w-full h-full "
           />
 
           <div className="absolute inset-0">
@@ -141,6 +148,8 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
             name="birthday"
             render={({ field }) => (
               <FormItem className="flex flex-col">
+                <FormLabel>Birthday</FormLabel>
+
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -189,8 +198,28 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
               </FormItem>
             )}
           />
+          <Button className="w-fit" disabled={isPending}>
+            {isPending && (
+              <Icons.spinner
+                className="mr-2 h-4 w-4 animate-spin"
+                aria-hidden="true"
+              />
+            )}
+            submit
+            <span className="sr-only">submit</span>
+          </Button>
         </form>
       </Form>
+      <Button className="w-fit" disabled={true}>
+        {false && (
+          <Icons.spinner
+            className="mr-2 h-4 w-4 animate-spin"
+            aria-hidden="true"
+          />
+        )}
+        submit
+        <span className="sr-only">submit</span>
+      </Button>
     </div>
   )
 }

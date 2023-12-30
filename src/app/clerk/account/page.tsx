@@ -12,6 +12,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import UpdateClerkForm from './_components/UpdateClerkForm'
 
+const today = new Date()
 export const metadata: Metadata = {
   //   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   title: 'Clerk',
@@ -46,7 +47,9 @@ export default async function NewStorePage() {
             information={{
               name: '',
               description: '',
-              birthday: `2023-12-28`,
+              birthday: `${today.getFullYear()}-${
+                today.getMonth() + 1
+              }-${today.getDate()}`,
               image: '',
             }}
           />
