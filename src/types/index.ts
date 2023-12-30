@@ -70,7 +70,6 @@ export const clerckForm = z.object({
     .refine((date) => new Date(date) < new Date(), {
       message: 'Birthday must be in the past',
     }),
-  image: z.unknown(),
 })
 
 export type ClerkFormValidation = z.infer<typeof clerckForm>
