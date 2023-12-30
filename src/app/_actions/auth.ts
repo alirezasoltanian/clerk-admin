@@ -44,6 +44,36 @@ export const getUser = async () => {
   }
 }
 
+export const SignInAdmin = async (data: {
+  username: string
+  password: string
+}): Promise<any> => {
+  const res = await configPostFetch<ReturnSignin>({
+    endpoint: `/website/user/login/`,
+    cache: 'no-cache',
+    tags: ['loginClerk'],
+    variables: data,
+  })
+
+  console.log('clerk signin', res.body)
+  if (res.status === 202) {
+    cookies().set({
+      name: 'authorization',
+      value: res.body.access,
+      maxAge: res.body.access_exp / 1000,
+      httpOnly: true,
+      secure: true,
+    })
+    cookies().set({
+      name: 'refresh',
+      value: res.body.refresh,
+      maxAge: res.body.refresh_exp / 1000,
+      httpOnly: true,
+      secure: true,
+    })
+  }
+  return res.status
+}
 export const SignInClerk = async (data: {
   username: string
   password: string

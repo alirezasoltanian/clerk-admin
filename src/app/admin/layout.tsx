@@ -15,6 +15,12 @@ export const AdminDashboard: SidebarNavItem[] = [
     icon: 'text',
     items: [],
   },
+  {
+    title: 'Clerks',
+    href: '/admin/clerks',
+    icon: 'text',
+    items: [],
+  },
 ]
 
 export default async function RootLayout({

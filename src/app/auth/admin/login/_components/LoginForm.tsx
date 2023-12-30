@@ -1,6 +1,6 @@
 'use client'
 
-import { SignInClerk } from '@/app/_actions/auth'
+import { SignInAdmin, SignInClerk } from '@/app/_actions/auth'
 // import { SignInAdmin } from '@/app/_actions/auth'
 import { Icons } from '@/components/icons'
 import { Button } from '@/components/ui/button'
@@ -36,7 +36,7 @@ export function LoginForm() {
   })
   const onSubmit = async (data: SignInType) => {
     startTransition(async () => {
-      const resStatus = await SignInClerk(data)
+      const resStatus = await SignInAdmin(data)
       if (resStatus === 202) {
         toast.success('login successfully')
         // router.push("/architect/account");
