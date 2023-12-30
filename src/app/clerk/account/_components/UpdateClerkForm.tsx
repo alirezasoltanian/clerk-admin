@@ -6,13 +6,16 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { clerckForm, ClerkForm, ClerkFormValidation } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -22,22 +25,23 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { Form, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
   information,
 }) => {
   const router = useRouter()
   const [isPending, startTransition] = React.useTransition()
-  const form = useForm<ClerkFormValidation>({
+  const form = useForm<z.infer<typeof clerckForm>>({
     resolver: zodResolver(clerckForm),
     defaultValues: {
       name: information ? information.name : '',
       description: information ? information.description : '',
       birthday: information ? information.birthday : `2023-12-28`,
-      image: information ? information.image : '',
     },
   })
 
+  const onSubmit = (data: z.infer<typeof clerckForm>) => {}
   function deleteProfile() {
     startTransition(async () => {
       // try {
@@ -96,8 +100,42 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
       <Form {...form}>
         <form
           className="grid w-full max-w-xl gap-5"
-          // onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+          onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
         >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    className=" md:w-1/2"
+                    placeholder="enter your full name."
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="enter your description about yourself."
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="birthday"
