@@ -1,5 +1,6 @@
 'use client'
 
+import { onSubmitClerkResetImage } from '@/app/_actions/clerk'
 // import { onSubmitArchitectResetImage } from '@/app/_action/architect';
 import { OurFileRouter } from '@/app/api/uploadthing/core'
 import { FileDialog } from '@/components/file-dialog'
@@ -50,14 +51,14 @@ export function UploadClerkProfileImage({ beText }: Props) {
         const resImage = await startUpload(form.getValues().image)
         const formattedImage = resImage?.map((image) => image.url)[0] || ''
         console.log(formattedImage[0])
-        // const res = await onSubmitArchitectResetImage(formattedImage);
-        // if (typeof res === "object") {
-        //   toast.success(`${res.message}`);
-        //   setOpen(false);
-        //   router.refresh();
-        // } else {
-        //   toast.error(`${res}`);
-        // }
+        const res = await onSubmitClerkResetImage(formattedImage)
+        if (typeof res === 'object') {
+          toast.success(`${res.message}`)
+          setOpen(false)
+          router.refresh()
+        } else {
+          toast.error(`${res}`)
+        }
       })
     } catch (err: any) {
       toast.error(err.message)

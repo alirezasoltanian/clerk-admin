@@ -1,6 +1,6 @@
 'use client'
 
-import { clerkFormAction } from '@/app/_actions/clerk'
+import { clerkFormAction, deleteClerkProfileImage } from '@/app/_actions/clerk'
 import { OurFileRouter } from '@/app/api/uploadthing/core'
 import { AlertDialogC } from '@/components/AlertDialog'
 import { Icons } from '@/components/icons'
@@ -52,7 +52,7 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
   const onSubmit = async (data: z.infer<typeof clerckForm>) => {
     const sendData = {
       ...data,
-      image: '',
+      image: information.image,
     }
 
     const res = await clerkFormAction(sendData)
@@ -63,19 +63,19 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
   }
   function deleteProfile() {
     startTransition(async () => {
-      // try {
-      //   deleteProfileImage();
-      //   toast.success(" saved new info ");
-      //   // console.log(res);
-      //   router.refresh();
-      // } catch (err: any) {
-      //   let message =
-      //     typeof err.response !== "undefined"
-      //       ? err.response.data.message
-      //       : err.message;
-      //   // console.log(message);
-      //   toast.error(message);
-      // }
+      try {
+        deleteClerkProfileImage()
+        toast.success(' saved new info ')
+        // console.log(res);
+        router.refresh()
+      } catch (err: any) {
+        let message =
+          typeof err.response !== 'undefined'
+            ? err.response.data.message
+            : err.message
+        // console.log(message);
+        toast.error(message)
+      }
     })
   }
   return (
@@ -107,7 +107,7 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
           >
             <div className="absolute -bottom-0 -right-0 ">
               <button
-                // onClick={() => deleteProfile()}
+                onClick={() => deleteProfile()}
                 className="bg-red-500/60 hover:bg-red-500/80 rounded-full  w-6 h-6 flex items-center justify-center"
               >
                 <Icons.trash size={15} />{' '}
