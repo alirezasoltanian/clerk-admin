@@ -1,6 +1,8 @@
 'use client'
 
 import { clerkFormAction } from '@/app/_actions/clerk'
+import { OurFileRouter } from '@/app/api/uploadthing/core'
+import { AlertDialogC } from '@/components/AlertDialog'
 import { Icons } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -22,6 +24,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { clerckForm, ClerkForm, ClerkFormValidation } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { generateReactHelpers } from '@uploadthing/react/hooks'
 import { format, parse } from 'date-fns'
 import { CalendarIcon, Download } from 'lucide-react'
 import Image from 'next/image'
@@ -30,6 +33,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { UploadClerkProfileImage } from './UpdateClerkProfileImage'
 
 const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
   information,
@@ -91,26 +95,26 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
           />
 
           <div className="absolute inset-0">
-            {/* <UploadProfileImage beText={false} /> */}
+            <UploadClerkProfileImage beText={false} />
           </div>
         </div>
-        {/* {(information?.image_url as string) && (
-            <AlertDialogC
-              title='Are you absolutely sure?'
-              description='This action cannot be undone. This will permanently delete your
-                profile image '
-              click={deleteProfile}
-            >
-              <div className='absolute -bottom-0 -right-0 '>
-                <button
-                  // onClick={() => deleteProfile()}
-                  className='bg-red-500/60 hover:bg-red-500/80 rounded-full  w-6 h-6 flex items-center justify-center'
-                >
-                  <Icons.trash size={15} />{" "}
-                </button>
-              </div>
-            </AlertDialogC>
-          )} */}
+        {(information?.image as string) && (
+          <AlertDialogC
+            title="Are you absolutely sure?"
+            description="This action cannot be undone. This will permanently delete your
+                profile image "
+            click={deleteProfile}
+          >
+            <div className="absolute -bottom-0 -right-0 ">
+              <button
+                // onClick={() => deleteProfile()}
+                className="bg-red-500/60 hover:bg-red-500/80 rounded-full  w-6 h-6 flex items-center justify-center"
+              >
+                <Icons.trash size={15} />{' '}
+              </button>
+            </div>
+          </AlertDialogC>
+        )}
       </div>
       <Form {...form}>
         <form
