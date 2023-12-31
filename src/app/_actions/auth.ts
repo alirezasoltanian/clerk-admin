@@ -3,6 +3,7 @@
 // import { SignInType, UserInformation } from "@/types";
 // import { ResetPasswordType, SignUpType } from "@/types/authType";
 import {
+  axiosInstance,
   configPostFetch,
   configPostWithAuthFetch,
 } from '@/config/api/axios-config'
@@ -43,7 +44,21 @@ export const getUser = async () => {
     user,
   }
 }
-
+export async function signOutAction() {
+  const cookieStore = cookies()
+  const authorization = cookieStore.get('authorization')?.value
+  const refresh = cookieStore.get('refresh')?.value
+  var BearerAuth = authorization ? `Bearer ${authorization}` : null
+  const res = await axiosInstance.post(
+    '/website/user/logout/',
+    {},
+    { headers: { Authorization: BearerAuth } }
+  )
+  cookies().delete('refresh')
+  cookies().delete('authorization')
+  return res.status
+  // revalidatePath("/");
+}
 export const SignInAdmin = async (data: {
   username: string
   password: string

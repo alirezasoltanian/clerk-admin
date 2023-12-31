@@ -38,7 +38,7 @@ export function LoginForm() {
       const resStatus = await SignInClerk(data)
       if (resStatus === 202) {
         toast.success('login successfully')
-        // router.push("/architect/account");
+        router.push('/clerk/account')
       } else {
         toast.error('password & username not correct')
       }

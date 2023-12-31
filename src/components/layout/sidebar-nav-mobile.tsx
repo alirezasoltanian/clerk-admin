@@ -1,13 +1,12 @@
 'use client'
 
+import { signOutAction } from '@/app/_actions/auth'
 import { Icons } from '@/components/icons'
 import { cn } from '@/lib/utils'
 import type { SidebarNavItem } from '@/types'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Button, buttonVariants } from '../ui/button'
-
-// import { signOutAction } from "@/app/_action/auth"
 
 export interface SidebarNavProps {
   items: SidebarNavItem[]
@@ -19,11 +18,11 @@ export function SidebarNavMobil({ items }: SidebarNavProps) {
 
   if (!items?.length) return null
   async function signOutClick() {
-    // const resStatus =  await signOutAction()
+    const resStatus = await signOutAction()
 
-    // if (resStatus === 200) {
-    router.refresh()
-    // }
+    if (resStatus === 200) {
+      router.refresh()
+    }
   }
   return (
     <div className="flex flex-wrap md:hidden  justify-center p-2 mt-7 w-fit border rounded-md gap-2">

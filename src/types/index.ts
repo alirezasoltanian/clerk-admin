@@ -7,6 +7,7 @@ export interface UserInformation {
   accessToken: string | unknown
   image: string
   email: string
+  role: string
   username: string
 }
 

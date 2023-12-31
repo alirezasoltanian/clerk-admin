@@ -3,8 +3,24 @@ import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { siteConfig } from '@/config/site'
 import Image from 'next/image'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { getUser } from '../_actions/auth'
 
-export default function AuthLayout({ children }: React.PropsWithChildren) {
+export default async function AuthLayout({
+  children,
+}: React.PropsWithChildren) {
+  const userInformation = (await getUser()).user
+  const isAuth = (await getUser()).isAuthenticated
+
+  if (isAuth) {
+    if (userInformation?.role === 'TEACHER') {
+      redirect('/admin/account')
+    } else if (userInformation?.role === 'CLERK') {
+      redirect('/clerk/account')
+    } else {
+      // redirect("/");
+    }
+  }
   return (
     <div className="grid min-h-screen grid-cols-1 overflow-hidden md:grid-cols-3 lg:grid-cols-2">
       <AspectRatio ratio={16 / 9}>
