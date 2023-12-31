@@ -61,7 +61,7 @@ export function ClerksTableShell({ data, pageCount }: PostTableShellProps) {
           return (
             <div className="flex flex-wrap gap-1">
               {!!image_url && (
-                <div className="relative w-10 bg-slate-500 aspect-square">
+                <div className="relative size-10 bg-slate-500 ">
                   <Image
                     width={100}
                     height={100}

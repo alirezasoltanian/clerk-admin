@@ -56,3 +56,21 @@ export async function rejectClerkAction(id: string) {
   console.log(res)
   return res
 }
+
+export async function getClerkInfoAction(clerkId: string) {
+  const customHeaders: HeadersInit = {
+    'clerk-uuid': clerkId,
+  }
+  try {
+    const res = await configGetWithAuthFetch({
+      endpoint: `/website/admin/clerk/info/`,
+      cache: 'no-cache',
+      tags: ['getClerkInfo'],
+      headers: customHeaders,
+    })
+    return res.body
+  } catch (error: any) {
+    console.log(error)
+    return error.response.data.message
+  }
+}

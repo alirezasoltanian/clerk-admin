@@ -85,10 +85,27 @@ export type SidebarNavItem = NavItemWithChildren
 export interface NavItemWithChildren extends NavItem {
   items: NavItemWithChildren[]
 }
+
+enum StatusClerk {
+  ACCEPT,
+  REJECT,
+}
 export interface Clerk {
   uuid: string
   name: string
   image: string
+  status: StatusClerk
+  birthday: string
+  create_at: string
+}
+export interface ClerkInfo {
+  uuid: string
+  name: string
+  image: string
+  status: StatusClerk
+
+  description: string
+  file: string
 }
 export interface NavItem {
   title: string
