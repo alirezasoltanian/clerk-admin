@@ -13,13 +13,17 @@ function ClerkInformation({ clerkInfo }: Props) {
 
   return (
     <div className="mt-10 space-y-5">
-      {clerkInfo.status === 'ACCEPTED' ? (
-        <div className="bg-green-400 w-fit rounded-md py-1 px-2 text-green-700">
-          {clerkInfo.status}
-        </div>
-      ) : (
-        <div>{clerkInfo.status}</div>
-      )}
+      <div
+        className={cn(
+          clerkInfo.status === 'ACCEPTED'
+            ? 'bg-green-300  text-green-700'
+            : 'bg-red-300  text-red-700',
+          'w-fit rounded-md py-1 px-2'
+        )}
+      >
+        {clerkInfo.status}
+      </div>
+
       <div className="relative size-20 rounded-md bg-slate-500 ">
         <Image
           width={100}
@@ -37,7 +41,9 @@ function ClerkInformation({ clerkInfo }: Props) {
       <div className="space-x-2 flex">
         <h3>CV : </h3>
         <a
+          download
           className={cn(buttonVariants({ variant: 'outline', size: 'icon' }))}
+          target="_blank"
           href={clerkInfo.image}
         >
           <Download />{' '}

@@ -64,7 +64,7 @@ export function SidebarNav({ items }: SidebarNavProps) {
       <Button
         aria-label="account sidebar"
         onClick={signOutClick}
-        className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
+        className={cn(buttonVariants({ size: 'sm' }))}
       >
         <span className={cn('group flex w-full items-center  px-2 py-1 ')}>
           <Icons.logOut className="mr-2 h-4 w-4" aria-hidden="true" />

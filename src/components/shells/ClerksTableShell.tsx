@@ -14,6 +14,7 @@ import { cn, formatDate, formatPrice } from '@/lib/utils'
 import { Clerk } from '@/types'
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type ColumnDef } from '@tanstack/react-table'
+import { Check } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -32,7 +33,7 @@ export function ClerksTableShell({ data, pageCount }: PostTableShellProps) {
   async function acceptClerk(id: string) {
     const res = await acceptClerkAction(id)
     if (res.status === 204 || 200) {
-      toast.success('delete successfully')
+      toast.success(res.body.message)
       router.refresh()
     } else {
       toast.error(res.body.message)
@@ -41,7 +42,7 @@ export function ClerksTableShell({ data, pageCount }: PostTableShellProps) {
   async function rejectClerk(id: string) {
     const res = await rejectClerkAction(id)
     if (res.status === 204 || 200) {
-      toast.success('delete successfully')
+      toast.success(res.body.message)
       router.refresh()
     } else {
       toast.error(res.body.message)
@@ -81,7 +82,29 @@ export function ClerksTableShell({ data, pageCount }: PostTableShellProps) {
           <DataTableColumnHeader column={column} title="Name" />
         ),
       },
-
+      {
+        accessorKey: 'status',
+        header: ({ column }) => {
+          return <div>Status</div>
+        },
+        cell: ({ row }) => {
+          const status: string = row.getValue('status')
+          return (
+            <div className="flex flex-wrap gap-1">
+              <div
+                className={cn(
+                  status === 'ACCEPTED'
+                    ? 'bg-green-300 text-green-600'
+                    : 'bg-red-300 text-red-600',
+                  'py-0.5 px-1 rounded-sm text-xs'
+                )}
+              >
+                {status}
+              </div>
+            </div>
+          )
+        },
+      },
       {
         accessorKey: 'birthday',
         header: ({ column }) => (
@@ -103,6 +126,7 @@ export function ClerksTableShell({ data, pageCount }: PostTableShellProps) {
         id: 'actions',
         cell: ({ row }) => {
           const slug = row.original.uuid
+          const status = row.original.status
           // ?.replace("@", `-${Math.random().toString(36).substring(2, 10)}-`)
           // .replace(".com", "");
           return (
@@ -120,28 +144,32 @@ export function ClerksTableShell({ data, pageCount }: PostTableShellProps) {
                 <DropdownMenuItem asChild>
                   <Link href={`/admin/clerk/${slug}`}>View clerk</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <button
-                    onClick={() => acceptClerk(slug)}
-                    className="w-full hover:bg-green-300 flex justify-between focus:bg-green-300 bg-green-200"
-                  >
-                    <p>Accept clerk</p>
-                    <p className="">
-                      <Icons.trash size={12} />
-                    </p>
-                  </button>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <button
-                    onClick={() => rejectClerk(slug)}
-                    className="w-full hover:bg-red-300 flex justify-between focus:bg-red-300 bg-red-200"
-                  >
-                    <p>Reject clerk</p>
-                    <p className="">
-                      <Icons.trash size={12} />
-                    </p>
-                  </button>
-                </DropdownMenuItem>
+                {status !== 'ACCEPTED' && (
+                  <DropdownMenuItem asChild>
+                    <button
+                      onClick={() => acceptClerk(slug)}
+                      className="w-full hover:bg-green-300 flex justify-between focus:bg-green-300 bg-green-200"
+                    >
+                      <p>Accept clerk</p>
+                      <p className="">
+                        <Check size={12} />
+                      </p>
+                    </button>
+                  </DropdownMenuItem>
+                )}
+                {status !== 'REJECTED' && (
+                  <DropdownMenuItem asChild>
+                    <button
+                      onClick={() => rejectClerk(slug)}
+                      className="w-full hover:bg-red-300 flex justify-between focus:bg-red-300 bg-red-200"
+                    >
+                      <p>Reject clerk</p>
+                      <p className="">
+                        <Icons.close size={12} />
+                      </p>
+                    </button>
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           )

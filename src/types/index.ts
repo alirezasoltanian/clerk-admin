@@ -86,15 +86,11 @@ export interface NavItemWithChildren extends NavItem {
   items: NavItemWithChildren[]
 }
 
-enum StatusClerk {
-  ACCEPT,
-  REJECT,
-}
 export interface Clerk {
   uuid: string
   name: string
   image: string
-  status: StatusClerk
+  status: 'ACCEPTED' | 'REJECTED'
   birthday: string
   create_at: string
 }
@@ -102,8 +98,7 @@ export interface ClerkInfo {
   uuid: string
   name: string
   image: string
-  status: StatusClerk
-
+  status: 'ACCEPTED' | 'REJECTED'
   description: string
   file: string
 }
