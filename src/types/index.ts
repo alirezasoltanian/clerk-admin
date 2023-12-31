@@ -1,4 +1,5 @@
 import { Icons } from '@/components/icons'
+import { type FileWithPath } from 'react-dropzone'
 import { z } from 'zod'
 
 export interface UserInformation {
@@ -98,3 +99,19 @@ export interface NavItem {
   label?: string
   description?: string
 }
+export type FileWithPreview = FileWithPath & {
+  preview: string
+}
+
+export const profileImageSchema = z.object({
+  image: z
+    .unknown()
+    .refine((val) => {
+      if (!Array.isArray(val)) return false
+      if (val.some((file) => !(file instanceof File))) return false
+      return true
+    }, 'Must be an array of File')
+    .optional()
+    .nullable()
+    .default(null),
+})
