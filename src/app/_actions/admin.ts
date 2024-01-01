@@ -24,7 +24,7 @@ export async function getClerkAction(input: any) {
         input.limit
       }&p=${input.offset + 1}`,
       cache: 'no-cache',
-      tags: ['getPostsDashboard'],
+      tags: ['getClerks'],
     })
     return res.body
   } catch (error: any) {

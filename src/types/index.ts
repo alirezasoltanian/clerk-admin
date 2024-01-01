@@ -87,6 +87,17 @@ export interface NavItemWithChildren extends NavItem {
   items: NavItemWithChildren[]
 }
 
+export type Category = {
+  uuid: string
+  title: string
+  sub_categories: SubCategoryP[]
+}
+
+export type SubCategoryP = {
+  uuid: string
+  title: string
+}
+
 export interface Clerk {
   uuid: string
   name: string

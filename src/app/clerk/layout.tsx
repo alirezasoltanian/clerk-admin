@@ -60,7 +60,6 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const userInformation = await getUser()
-  console.log(userInformation.user?.role)
 
   if (
     !userInformation.isAuthenticated &&

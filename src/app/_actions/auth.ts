@@ -64,7 +64,7 @@ export const SignInAdmin = async (data: {
   password: string
 }): Promise<any> => {
   const res = await configPostFetch<ReturnSignin>({
-    endpoint: `/website/user/login/`,
+    endpoint: `/website/admin/login/`,
     cache: 'no-cache',
     tags: ['loginClerk'],
     variables: data,
