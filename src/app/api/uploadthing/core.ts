@@ -34,6 +34,10 @@ export const ourFileRouter = {
   clerkImage: f({ image: { maxFileSize: '4MB', maxFileCount: 1 } })
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
+
+  clerkCV: f({ pdf: { maxFileSize: '4MB', maxFileCount: 1 } })
+    .middleware(() => handleAuth())
+    .onUploadComplete(() => {}),
   // courseAttachment: f(["text", "image", "video", "audio", "pdf"])
   //   .middleware(() => handleAuthTeacher())
   //   .onUploadComplete(() => {}),

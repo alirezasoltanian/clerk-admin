@@ -64,17 +64,15 @@ export const clerckForm = z.object({
   description: z.string().min(15, {
     message: 'Provide more description about yourself',
   }),
-  birthday: z
-    .string()
-    .refine((date) => !isNaN(Date.parse(date)), {
-      message: 'Invalid date format',
-    })
-    .refine((date) => new Date(date) >= new Date(), {
-      message: 'Birthday must be in the past',
-    }),
-
+  birthday: z.string().refine((date) => !isNaN(Date.parse(date)), {
+    message: 'Invalid date format',
+  }),
+  // .refine((date) => new Date(date) >= new Date(), {
+  //   message: 'Birthday must be in the past',
+  // })
   email: z.string().email(),
   cvFile: z.unknown(),
+  is_accepted_policies: z.boolean(),
 })
 
 export type ClerkFormValidation = z.infer<typeof clerckForm>
@@ -85,6 +83,7 @@ export type ClerkForm = {
   email: string
   cvFile: string
   image: string
+  is_accepted_policies: boolean
 }
 export type ClerkCheck = z.infer<typeof signUpSchema>
 export type SidebarNavItem = NavItemWithChildren
