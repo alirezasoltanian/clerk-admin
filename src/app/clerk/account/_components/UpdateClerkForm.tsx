@@ -61,7 +61,7 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
   const { isUploading, startUpload } = useUploadThing('clerkCV')
 
   const onSubmit = async (data: z.infer<typeof clerckForm>) => {
-    const cvFile = form.watch('resume') as File
+    const cvFile = (form.watch('resume') as File[])[0]
 
     console.log(cvFile)
 
@@ -69,14 +69,19 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
 
     console.log(cvRes)
     const sendData = {
-      ...data,
+      name: data.name,
+      birthday: data.birthday,
+      description: data.description,
+      resume: cvRes ? cvRes[0].url : information.resume,
+      email: data.email,
+      is_accepted_policies: data.is_accepted_policies,
     }
 
-    // const res = await clerkFormAction(sendData)
+    const res = await clerkFormAction(sendData)
 
-    // console.log(res)
+    console.log(res)
 
-    // toast.message(res.body.message)
+    toast.message(res.body.message)
   }
   function deleteProfile() {
     startTransition(async () => {
@@ -281,7 +286,10 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
               </div>
             </FormItem>
           )}
-          <Button className="w-fit" disabled={isPending}>
+          <Button
+            className="w-fit"
+            disabled={isPending || !form.watch('is_accepted_policies')}
+          >
             {isPending && (
               <Icons.spinner
                 className="mr-2 h-4 w-4 animate-spin"

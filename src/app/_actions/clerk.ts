@@ -9,14 +9,25 @@ import { clerckForm, ClerkForm } from '@/types'
 import { cookies } from 'next/headers'
 import { z } from 'zod'
 
-const clerkFormAction = async (data: z.infer<typeof clerckForm>) => {
-  const res = configPostWithAuthFetch({
-    endpoint: `/website/admin/clerk/`,
-    cache: 'no-cache',
-    variables: data,
-  })
-  console.log('clerk check', res)
-  return res
+const clerkFormAction = async (data: {
+  name: string
+  birthday: string
+  description: string
+  resume: string
+  email: string
+}) => {
+  try {
+    const res = configPostWithAuthFetch({
+      endpoint: `/website/admin/clerk/`,
+      cache: 'no-cache',
+      variables: data,
+    })
+    console.log('clerk check', res)
+    return res
+  } catch (e: any) {
+    console.log(e)
+    return null
+  }
 }
 
 const onSubmitClerkResetImage = async (image: string) => {
