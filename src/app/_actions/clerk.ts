@@ -2,12 +2,14 @@
 
 import {
   axiosInstance,
+  configGetWithAuthFetch,
   configPostWithAuthFetch,
 } from '@/config/api/axios-config'
-import { ClerkForm } from '@/types'
+import { clerckForm, ClerkForm } from '@/types'
 import { cookies } from 'next/headers'
+import { z } from 'zod'
 
-const clerkFormAction = async (data: ClerkForm) => {
+const clerkFormAction = async (data: z.infer<typeof clerckForm>) => {
   const res = configPostWithAuthFetch({
     endpoint: `/website/admin/clerk/`,
     cache: 'no-cache',
@@ -44,4 +46,23 @@ const deleteClerkProfileImage = async () => {
   }
 }
 
-export { clerkFormAction, onSubmitClerkResetImage, deleteClerkProfileImage }
+const getClerkInformationAction = async () => {
+  try {
+    const res = await configGetWithAuthFetch<ClerkForm>({
+      endpoint: `/website/admin/ideabank/architect/`,
+      cache: 'no-cache',
+      tags: ['getStoreAction'],
+    })
+    return res.body
+  } catch (error: any) {
+    console.log(error)
+    return null
+  }
+}
+
+export {
+  clerkFormAction,
+  onSubmitClerkResetImage,
+  deleteClerkProfileImage,
+  getClerkInformationAction,
+}

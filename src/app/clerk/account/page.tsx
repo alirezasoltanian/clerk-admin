@@ -1,3 +1,4 @@
+import { getClerkInformationAction } from '@/app/_actions/clerk'
 import {
   PageHeader,
   PageHeaderDescription,
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
 export default async function NewStorePage() {
   // const res = await getTeacherAction();
 
+  // const res = await getClerkInformationAction();
   return (
     <Shell variant="sidebar">
       <PageHeader
@@ -50,6 +52,8 @@ export default async function NewStorePage() {
               birthday: `${today.getFullYear()}-${
                 today.getMonth() + 1
               }-${today.getDate()}`,
+              email: '',
+              cvFile: '',
               image: '',
             }}
           />
