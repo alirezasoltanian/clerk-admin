@@ -48,20 +48,32 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
       birthday: information ? information.birthday : `2024-02-28`,
       email: information ? information.email : '',
       cvFile: information ? information.cvFile : '',
+      is_accepted_policies: information
+        ? information.is_accepted_policies
+        : false,
     },
   })
+  const { useUploadThing } = generateReactHelpers<OurFileRouter>()
+
+  const { isUploading, startUpload } = useUploadThing('clerkCV')
 
   const onSubmit = async (data: z.infer<typeof clerckForm>) => {
+    const cvFile = form.watch('cvFile') as File
+
+    console.log(cvFile)
+
+    const cvRes = await startUpload([cvFile])
+
+    console.log(cvRes)
     const sendData = {
       ...data,
-      image: information.image,
     }
 
-    const res = await clerkFormAction(sendData)
+    // const res = await clerkFormAction(sendData)
 
-    console.log(res)
+    // console.log(res)
 
-    toast.message(res.body.message)
+    // toast.message(res.body.message)
   }
   function deleteProfile() {
     startTransition(async () => {
@@ -157,23 +169,25 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    className=""
-                    placeholder="enter your email."
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="w-[45%]">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      className=""
+                      placeholder="enter your email."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="birthday"
@@ -229,6 +243,39 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
               </FormItem>
             )}
           />
+          <FormItem className="">
+            <div className="flex-col">
+              <FormLabel>CV File</FormLabel>
+              <FormControl className="w-fix">
+                {/* {officeImage !== "" && <img src={officeImage} alt="office image" height={50} width={50}/>} */}
+                <input
+                  placeholder=""
+                  {...form.register('cvFile')}
+                  type="file"
+                  accept=".pdf"
+                  className="ml-2 w-fix accent-slate-800"
+                  onChange={(e) => {
+                    // setOfficeImage("");
+                  }}
+                />
+              </FormControl>
+            </div>
+          </FormItem>
+          {information && !information.is_accepted_policies && (
+            <FormItem className="">
+              <div className="flex">
+                <FormLabel>Accept policies</FormLabel>
+                <FormControl className="w-fix">
+                  <input
+                    placeholder=""
+                    {...form.register('is_accepted_policies')}
+                    type="checkbox"
+                    className="ml-2 w-fix accent-slate-800"
+                  />
+                </FormControl>
+              </div>
+            </FormItem>
+          )}
           <Button className="w-fit" disabled={isPending}>
             {isPending && (
               <Icons.spinner
