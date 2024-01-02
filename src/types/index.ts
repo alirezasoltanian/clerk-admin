@@ -72,6 +72,9 @@ export const clerckForm = z.object({
     .refine((date) => new Date(date) >= new Date(), {
       message: 'Birthday must be in the past',
     }),
+
+  email: z.string().email(),
+  cvFile: z.unknown(),
 })
 
 export type ClerkFormValidation = z.infer<typeof clerckForm>
@@ -79,6 +82,8 @@ export type ClerkForm = {
   name: string
   description: string
   birthday: string
+  email: string
+  cvFile: string
   image: string
 }
 export type ClerkCheck = z.infer<typeof signUpSchema>

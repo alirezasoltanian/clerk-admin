@@ -45,7 +45,9 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
     defaultValues: {
       name: information ? information.name : '',
       description: information ? information.description : '',
-      birthday: information ? information.birthday : `2023-12-28`,
+      birthday: information ? information.birthday : `2024-02-28`,
+      email: information ? information.email : '',
+      cvFile: information ? information.cvFile : '',
     },
   })
 
@@ -148,6 +150,23 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
                 <FormControl>
                   <Textarea
                     placeholder="enter your description about yourself."
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    className=""
+                    placeholder="enter your email."
                     {...field}
                   />
                 </FormControl>
