@@ -4,6 +4,7 @@ import {
   axiosInstance,
   configGetWithAuthFetch,
   configPostWithAuthFetch,
+  configPutFetch,
 } from '@/config/api/axios-config'
 import { clerckForm, ClerkForm } from '@/types'
 import { cookies } from 'next/headers'
@@ -18,6 +19,27 @@ const clerkFormAction = async (data: {
 }) => {
   try {
     const res = configPostWithAuthFetch({
+      endpoint: `/website/admin/clerk/`,
+      cache: 'no-cache',
+      variables: data,
+    })
+    console.log('clerk check', res)
+    return res
+  } catch (e: any) {
+    console.log(e)
+    return null
+  }
+}
+
+const updateClerkAction = async (data: {
+  name: string
+  birthday: string
+  description: string
+  resume: string
+  email: string
+}) => {
+  try {
+    const res = configPutFetch({
       endpoint: `/website/admin/clerk/`,
       cache: 'no-cache',
       variables: data,
@@ -76,4 +98,5 @@ export {
   onSubmitClerkResetImage,
   deleteClerkProfileImage,
   getClerkInformationAction,
+  updateClerkAction,
 }

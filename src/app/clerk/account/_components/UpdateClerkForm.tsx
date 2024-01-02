@@ -1,6 +1,10 @@
 'use client'
 
-import { clerkFormAction, deleteClerkProfileImage } from '@/app/_actions/clerk'
+import {
+  clerkFormAction,
+  deleteClerkProfileImage,
+  updateClerkAction,
+} from '@/app/_actions/clerk'
 import { OurFileRouter } from '@/app/api/uploadthing/core'
 import { AlertDialogC } from '@/components/AlertDialog'
 import { Icons } from '@/components/icons'
@@ -76,12 +80,14 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
       email: data.email,
       is_accepted_policies: data.is_accepted_policies,
     }
-
-    const res = await clerkFormAction(sendData)
+    let res
+    if (information && information.is_accepted_policies)
+      res = await updateClerkAction(sendData)
+    else res = await clerkFormAction(sendData)
 
     console.log(res)
 
-    toast.message(res.body.message)
+    toast.message(res?.body.message)
   }
   function deleteProfile() {
     startTransition(async () => {
