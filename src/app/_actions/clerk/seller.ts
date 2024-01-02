@@ -16,9 +16,9 @@ export async function getStoresAction(input: any) {
   const ordering =
     order === 'desc' ? `-${column}` : order === 'asc' ? column : '-created_at'
   console.log(
-    `/admin/clerk/stores/?ordering=${ordering}&page_size=${input.limit}&p=${
-      input.offset + 1
-    }`
+    `/website/admin/clerk/stores/?ordering=${ordering}&page_size=${
+      input.limit
+    }&p=${input.offset + 1}`
   )
 
   try {
@@ -29,6 +29,7 @@ export async function getStoresAction(input: any) {
       cache: 'no-cache',
       tags: ['getStores'],
     })
+    console.log(res)
     return res.body
   } catch (error: any) {
     console.log(error)

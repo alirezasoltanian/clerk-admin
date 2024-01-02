@@ -52,12 +52,12 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
   const columns = React.useMemo<ColumnDef<Clerk, unknown>[]>(
     () => [
       {
-        accessorKey: 'image',
+        accessorKey: 'image_owner',
         header: ({ column }) => {
           return <div>image</div>
         },
         cell: ({ row }) => {
-          const image_url: string = row.getValue('image')
+          const image_url: string = row.getValue('image_owner')
           console.log(data)
           return (
             <div className="flex flex-wrap gap-1">
@@ -77,9 +77,21 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
         },
       },
       {
-        accessorKey: 'name',
+        accessorKey: 'owner',
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Name" />
+          <DataTableColumnHeader column={column} title="Owner" />
+        ),
+      },
+      {
+        accessorKey: 'email_owner',
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Email" />
+        ),
+      },
+      {
+        accessorKey: 'title',
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Store" />
         ),
       },
       {
@@ -95,7 +107,9 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
                 className={cn(
                   status === 'ACCEPTED'
                     ? 'bg-green-300 text-green-600'
-                    : 'bg-red-300 text-red-600',
+                    : status === 'REJECTED'
+                      ? 'bg-red-300 text-red-600'
+                      : 'bg-yellow-300 text-yellow-600',
                   'py-0.5 px-1 rounded-sm text-xs'
                 )}
               >
@@ -104,14 +118,6 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
             </div>
           )
         },
-      },
-      {
-        accessorKey: 'birthday',
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Birthday" />
-        ),
-        cell: ({ cell }) => formatDate(cell.getValue() as string | number),
-        enableColumnFilter: false,
       },
 
       {
