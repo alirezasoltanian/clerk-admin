@@ -54,11 +54,18 @@ export default async function CoursesPage({
   const pageCount = Math.ceil(res.count / limit)
   return (
     <div className="space-y-6 my-12">
-      {/* <div className="flex flex-col gap-4 xs:flex-row xs:items-center xs:justify-between">
-        <h2 className="text-2xl font-bold tracking-tight">Store : {}</h2>
-        <StoreDetail store={storeDetail as Store} />
+      <div className="flex flex-col gap-4 xs:flex-row xs:items-center xs:justify-between">
+        <h2 className="text-2xl font-bold tracking-tight">
+          Store : {storeDetail.title}
+        </h2>
       </div>
-      <ProductsTableShell enumCategories={getCategories} storeId={storeId} data={res.results} pageCount={pageCount} /> */}
+      <StoreDetail store={storeDetail as Store} />
+      <ProductsTableShell
+        enumCategories={getCategories}
+        storeId={storeId}
+        data={res.results}
+        pageCount={pageCount}
+      />
     </div>
   )
 }

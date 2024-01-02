@@ -23,7 +23,7 @@ export async function getStoresAction(input: any) {
 
   try {
     const res = await configGetWithAuthFetch({
-      endpoint: `/admin/clerk/stores/?ordering=${ordering}&page_size=${
+      endpoint: `/website/admin/clerk/stores/?ordering=${ordering}&page_size=${
         input.limit
       }&p=${input.offset + 1}`,
       cache: 'no-cache',
@@ -50,15 +50,21 @@ export async function getProductsAction(input: any) {
   const customHeaders: HeadersInit = {
     'store-uuid': input.storeId,
   }
+  const categories =
+    input?.categories && !!input?.categories.length
+      ? input?.categories?.join('-')
+      : undefined
 
   try {
     const res = await configGetWithAuthFetch({
-      endpoint: `/website/admin/clerks/?ordering=${ordering}&page_size=${
+      endpoint: `/website/shop/store/filter/?ordering=${ordering}&start_date=${
+        input.from
+      }&categories=${categories}&p=${input.offset + 1}&page_size=${
         input.limit
-      }&p=${input.offset + 1}`,
-      cache: 'no-cache',
-      tags: ['getStores'],
+      }&search=${input.title}`,
       headers: customHeaders,
+      cache: 'no-cache',
+      tags: ['getProductsStoreAction'],
     })
 
     return res.body
@@ -76,7 +82,7 @@ export async function getStoreAction(storeId: string) {
       'store-uuid': storeId,
     }
     const res = await configGetWithAuthFetch<Store>({
-      endpoint: `/admin/clerk/store/`,
+      endpoint: `/website/admin/clerk/store/`,
       headers: customHeaders,
     })
     console.log(res.body)
