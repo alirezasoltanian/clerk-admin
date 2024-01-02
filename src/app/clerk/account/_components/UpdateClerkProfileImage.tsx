@@ -50,7 +50,7 @@ export function UploadClerkProfileImage({ beText }: Props) {
       startTransition(async () => {
         const resImage = await startUpload(form.getValues().image)
         const formattedImage = resImage?.map((image) => image.url)[0] || ''
-        console.log(formattedImage[0])
+        console.log(formattedImage[0], form.getValues().image)
         const res = await onSubmitClerkResetImage(formattedImage)
         if (typeof res === 'object') {
           toast.success(`${res.message}`)
