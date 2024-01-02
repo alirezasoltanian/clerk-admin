@@ -23,7 +23,8 @@ export const metadata: Metadata = {
 export default async function NewStorePage() {
   // const res = await getTeacherAction();
 
-  // const res = await getClerkInformationAction();
+  const res = await getClerkInformationAction()
+  console.log(res)
   return (
     <Shell variant="sidebar">
       <PageHeader
@@ -46,16 +47,21 @@ export default async function NewStorePage() {
       >
         <CardContent>
           <UpdateClerkForm
-            information={{
-              name: '',
-              description: '',
-              birthday: `${today.getFullYear()}-${
-                today.getMonth() + 1
-              }-${today.getDate()}`,
-              email: '',
-              cvFile: '',
-              image: '',
-            }}
+            information={
+              res
+                ? res
+                : {
+                    name: '',
+                    description: '',
+                    birthday: `${today.getFullYear()}-${
+                      today.getMonth() + 1
+                    }-${today.getDate()}`,
+                    email: '',
+                    resume: '',
+                    image: '',
+                    is_accepted_policies: false,
+                  }
+            }
           />
         </CardContent>
       </Card>

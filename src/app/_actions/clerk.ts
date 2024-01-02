@@ -49,9 +49,9 @@ const deleteClerkProfileImage = async () => {
 const getClerkInformationAction = async () => {
   try {
     const res = await configGetWithAuthFetch<ClerkForm>({
-      endpoint: `/website/admin/ideabank/architect/`,
+      endpoint: `/website/admin/clerk/`,
       cache: 'no-cache',
-      tags: ['getStoreAction'],
+      tags: ['getClerkAction'],
     })
     return res.body
   } catch (error: any) {
