@@ -6,6 +6,7 @@ import {
   configPostWithAuthFetch,
 } from '@/config/api/axios-config'
 import { ProductList } from '@/types'
+import { ProductAddData, Store } from '@/types/seller'
 import { cookies } from 'next/headers'
 
 export async function getStoresAction(input: any) {
@@ -135,7 +136,7 @@ export async function getProductAction(productId: string) {
     customHeaders['authorization'] = BearerAuth
   }
   try {
-    const res = await configGetWithAuthFetch({
+    const res = await configGetWithAuthFetch<ProductAddData>({
       endpoint: '/website/admin/shop/product/',
       headers: customHeaders,
       cache: 'no-cache',
@@ -147,4 +148,59 @@ export async function getProductAction(productId: string) {
     console.log(error)
     return error.response.data.message
   }
+}
+
+export async function getSellersAction(input: any) {
+  const [column, order] =
+    (input.sort?.split('.') as [
+      keyof ProductList | undefined,
+      'asc' | 'desc' | undefined,
+    ]) ?? []
+  const ordering =
+    order === 'desc' ? `-${column}` : order === 'asc' ? column : '-created_at'
+  console.log(
+    `/website/admin/clerk/sellers/?ordering=${ordering}&p=${
+      input.offset + 1
+    }&page_size=${input.limit}&search=${input.title}`
+  )
+
+  try {
+    const res = await configGetWithAuthFetch({
+      endpoint: `/website/admin/clerk/sellers/?ordering=${ordering}&p=${
+        input.offset + 1
+      }&page_size=${input.limit}&search=${input.title}`,
+      cache: 'no-cache',
+      tags: ['getSellersAction'],
+    })
+    console.log(res)
+
+    return res.body
+  } catch (error: any) {
+    console.log(error)
+    return error.response.data.message
+  }
+}
+
+export async function acceptSellerAction(id: string) {
+  const customHeaders: HeadersInit = {
+    'seller-uuid': id,
+  }
+  const res = await configPostWithAuthFetch({
+    endpoint: `/website/admin/seller/accept/`,
+    headers: customHeaders,
+  })
+  console.log(res)
+  return res
+}
+
+export async function rejectSellerAction(id: string) {
+  const customHeaders: HeadersInit = {
+    'seller-uuid': id,
+  }
+  const res = await configPostWithAuthFetch({
+    endpoint: `/website/admin/seller/reject/`,
+    headers: customHeaders,
+  })
+  console.log(res)
+  return res
 }

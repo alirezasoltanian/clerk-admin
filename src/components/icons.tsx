@@ -1,6 +1,7 @@
 import {
   BadgeInfo,
   CalendarDays,
+  Check,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -68,6 +69,7 @@ export const Icons = {
   product: GalleryThumbnails,
   course: MonitorPlay,
   text: Text,
+  check: Check,
   placeholder: Image,
   linkedin: Linkedin,
   user: User,

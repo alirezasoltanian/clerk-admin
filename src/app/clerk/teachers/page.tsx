@@ -1,5 +1,7 @@
 import { getSellersAction, getStoresAction } from '@/app/_actions/clerk/seller'
+import { getTeachersAction } from '@/app/_actions/clerk/teacher'
 import { SellersTableShell } from '@/components/shells/SellersTableShell'
+import { TeachersTableShell } from '@/components/shells/TeachersTableShell'
 import type { Metadata } from 'next'
 
 interface CoursesPageProps {
@@ -22,7 +24,7 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
     typeof page === 'string' ? (parseInt(page) > 0 ? parseInt(page) - 1 : 0) : 0
   const fromDay = typeof from === 'string' ? new Date(from) : undefined
   const toDay = typeof to === 'string' ? new Date(to) : undefined
-  const res = await getSellersAction({
+  const res = await getTeachersAction({
     sort,
     limit,
     offset,
@@ -34,10 +36,10 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
   return (
     <div className="space-y-6 my-12">
       <div className="flex flex-col gap-4 xs:flex-row xs:items-center xs:justify-between">
-        <h2 className="text-2xl font-bold tracking-tight">Sellers</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Teachers</h2>
         {/* <DateRangePicker align="end" /> */}
       </div>
-      <SellersTableShell data={res.results} pageCount={pageCount} />
+      <TeachersTableShell data={res.results} pageCount={pageCount} />
     </div>
   )
 }

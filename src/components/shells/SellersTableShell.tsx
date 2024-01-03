@@ -2,12 +2,11 @@
 
 import { acceptClerkAction, rejectClerkAction } from '@/app/_actions/admin'
 import {
-  acceptStoreAction,
-  rejectStoreAction,
+  acceptSellerAction,
+  rejectSellerAction,
 } from '@/app/_actions/clerk/seller'
 import { DataTable } from '@/components/data-table/data-table'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
-import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,11 +14,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn, formatDate, formatPrice } from '@/lib/utils'
-import { Clerk } from '@/types'
-import { Store } from '@/types/seller'
+import { Seller } from '@/types/seller'
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type ColumnDef } from '@tanstack/react-table'
-import { Check } from 'lucide-react'
+import { Check, Download } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -27,16 +25,19 @@ import * as React from 'react'
 import { toast } from 'sonner'
 import { Icons } from '../icons'
 import { Badge } from '../ui/badge'
+import { Button, buttonVariants } from '../ui/button'
 
 interface PostTableShellProps {
-  data: Store[]
+  data: Seller[]
   pageCount: number
 }
 
-export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
+export function SellersTableShell({ data, pageCount }: PostTableShellProps) {
+  const [isPending, startTransition] = React.useTransition()
+
   const router = useRouter()
-  async function acceptStore(id: string) {
-    const res = await acceptStoreAction(id)
+  async function acceptFunc(id: string) {
+    const res = await acceptSellerAction(id)
     if (res.status === 204 || 200) {
       toast.success(res.body.message)
       router.refresh()
@@ -44,8 +45,8 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
       toast.error(res.body.message)
     }
   }
-  async function rejectStore(id: string) {
-    const res = await rejectStoreAction(id)
+  async function rejectFunc(id: string) {
+    const res = await rejectSellerAction(id)
     if (res.status === 204 || 200) {
       toast.success(res.body.message)
       router.refresh()
@@ -54,15 +55,15 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
     }
   }
   // Memoize the columns so they don't re-render on every render
-  const columns = React.useMemo<ColumnDef<Store, unknown>[]>(
+  const columns = React.useMemo<ColumnDef<Seller, unknown>[]>(
     () => [
       {
-        accessorKey: 'image_owner',
+        accessorKey: 'image',
         header: ({ column }) => {
           return <div>image</div>
         },
         cell: ({ row }) => {
-          const image_url: string = row.getValue('image_owner')
+          const image_url: string = row.getValue('image')
           console.log(data)
           return (
             <div className="flex flex-wrap gap-1">
@@ -82,26 +83,14 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
         },
       },
       {
-        accessorKey: 'owner',
+        accessorKey: 'name',
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Owner" />
-        ),
-      },
-      {
-        accessorKey: 'email_owner',
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Email" />
-        ),
-      },
-      {
-        accessorKey: 'title',
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Store" />
+          <DataTableColumnHeader column={column} title="Name" />
         ),
       },
       {
         accessorKey: 'status',
-        header: ({ column }) => {
+        header: () => {
           return <div>Status</div>
         },
         cell: ({ row }) => {
@@ -112,9 +101,7 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
                 className={cn(
                   status === 'ACCEPTED'
                     ? 'bg-green-300 text-green-600'
-                    : status === 'REJECTED'
-                      ? 'bg-red-300 text-red-600'
-                      : 'bg-yellow-300 text-yellow-600',
+                    : 'bg-red-300 text-red-600',
                   'py-0.5 px-1 rounded-sm text-xs'
                 )}
               >
@@ -124,12 +111,33 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
           )
         },
       },
+      {
+        accessorKey: 'resume',
+        header: () => {
+          return <div>Resume</div>
+        },
+        cell: ({ row }) => {
+          const status: string = row.getValue('status')
+          return (
+            <div className="">
+              <a
+                className={cn(
+                  buttonVariants({ variant: 'outline', size: 'icon' })
+                )}
+                href={row.original.resume}
+              >
+                <Download />
+              </a>
+            </div>
+          )
+        },
+      },
 
       {
-        accessorKey: 'created_at',
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Create at" />
-        ),
+        accessorKey: 'birthday',
+        header: () => {
+          return <div>Birthday</div>
+        },
         cell: ({ cell }) => formatDate(cell.getValue() as string | number),
         enableColumnFilter: false,
       },
@@ -153,15 +161,22 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[160px] space-y-1">
                 <DropdownMenuItem asChild>
-                  <Link href={`/clerk/seller/stores/${slug}`}>View store</Link>
+                  <Link href={`/admin/clerk/${slug}`}>View seller</Link>
                 </DropdownMenuItem>
                 {status !== 'ACCEPTED' && (
                   <DropdownMenuItem asChild>
                     <button
-                      onClick={() => acceptStore(slug)}
+                      onClick={() => {
+                        startTransition(() => {
+                          row.toggleSelected(false)
+                          toast.promise(acceptFunc(row.original.uuid), {
+                            loading: 'Deleting...',
+                          })
+                        })
+                      }}
                       className="w-full hover:bg-green-300 flex justify-between focus:bg-green-300 bg-green-200"
                     >
-                      <p>Accept store</p>
+                      <p>Accept seller</p>
                       <p className="">
                         <Check size={12} />
                       </p>
@@ -171,10 +186,18 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
                 {status !== 'REJECTED' && (
                   <DropdownMenuItem asChild>
                     <button
-                      onClick={() => rejectStore(slug)}
+                      onClick={() => {
+                        startTransition(() => {
+                          row.toggleSelected(false)
+
+                          toast.promise(rejectFunc(row.original.uuid), {
+                            loading: 'Deleting...',
+                          })
+                        })
+                      }}
                       className="w-full hover:bg-red-300 flex justify-between focus:bg-red-300 bg-red-200"
                     >
-                      <p>Reject store</p>
+                      <p>Reject seller</p>
                       <p className="">
                         <Icons.close size={12} />
                       </p>

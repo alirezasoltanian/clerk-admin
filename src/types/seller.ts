@@ -1,18 +1,10 @@
-interface Store {
+export interface Store {
   uuid: string
   title: string
   description: string
   created_at: string
   owner: string
-  image_owner: string
-  email_owner: string
-}
-
-interface store {
-  uuid: string
-  title: string
-  created_at: string
-  owner: string
+  status: string
   image_owner: string
   email_owner: string
 }
@@ -20,6 +12,15 @@ interface store {
 interface product {
   uuid: string
   title: string
+  created_at: string
+}
+
+export interface Seller {
+  uuid: string
+  name: string
+  image: string
+  resume: string
+  status: string
   created_at: string
 }
 export interface ReturnSipping {
