@@ -1,6 +1,10 @@
 'use client'
 
 import { acceptClerkAction, rejectClerkAction } from '@/app/_actions/admin'
+import {
+  acceptStoreAction,
+  rejectStoreAction,
+} from '@/app/_actions/clerk/seller'
 import { DataTable } from '@/components/data-table/data-table'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import { Button } from '@/components/ui/button'
@@ -24,14 +28,14 @@ import { Icons } from '../icons'
 import { Badge } from '../ui/badge'
 
 interface PostTableShellProps {
-  data: Clerk[]
+  data: Store[]
   pageCount: number
 }
 
 export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
   const router = useRouter()
-  async function acceptClerk(id: string) {
-    const res = await acceptClerkAction(id)
+  async function acceptStore(id: string) {
+    const res = await acceptStoreAction(id)
     if (res.status === 204 || 200) {
       toast.success(res.body.message)
       router.refresh()
@@ -39,8 +43,8 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
       toast.error(res.body.message)
     }
   }
-  async function rejectClerk(id: string) {
-    const res = await rejectClerkAction(id)
+  async function rejectStore(id: string) {
+    const res = await rejectStoreAction(id)
     if (res.status === 204 || 200) {
       toast.success(res.body.message)
       router.refresh()
@@ -148,12 +152,12 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[160px] space-y-1">
                 <DropdownMenuItem asChild>
-                  <Link href={`/admin/clerk/${slug}`}>View clerk</Link>
+                  <Link href={`/clerk/seller/stores/${slug}`}>View store</Link>
                 </DropdownMenuItem>
                 {status !== 'ACCEPTED' && (
                   <DropdownMenuItem asChild>
                     <button
-                      onClick={() => acceptClerk(slug)}
+                      onClick={() => acceptStore(slug)}
                       className="w-full hover:bg-green-300 flex justify-between focus:bg-green-300 bg-green-200"
                     >
                       <p>Accept clerk</p>
@@ -166,7 +170,7 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
                 {status !== 'REJECTED' && (
                   <DropdownMenuItem asChild>
                     <button
-                      onClick={() => rejectClerk(slug)}
+                      onClick={() => rejectStore(slug)}
                       className="w-full hover:bg-red-300 flex justify-between focus:bg-red-300 bg-red-200"
                     >
                       <p>Reject clerk</p>

@@ -17,7 +17,7 @@ export const AdminDashboard: SidebarNavItem[] = [
   },
   {
     title: 'Seller',
-    href: '/clerk/seller',
+    href: '/clerk/seller/stores',
     icon: 'text',
     items: [
       {

@@ -6,7 +6,7 @@ interface Props {
 }
 function StoreDetail({ store }: Props) {
   return (
-    <div>
+    <div className="space-y-2">
       <div className="relative size-20 rounded-md bg-slate-500 ">
         <Image
           width={100}
@@ -17,7 +17,7 @@ function StoreDetail({ store }: Props) {
         />
       </div>
       <h3>Name : {store.title}</h3>
-      <div className="space-y-2">
+      <div className="space-y-1">
         <h3>Description : </h3>
         <p>{store.description}</p>
       </div>

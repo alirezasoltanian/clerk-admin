@@ -120,8 +120,10 @@ export function ProductsTableShell({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px] space-y-1">
               <DropdownMenuItem asChild>
-                <Link href={`/admin/clerk/${row.original.uuid}`}>
-                  View clerk
+                <Link
+                  href={`/clerk/seller/stores/${storeId}/product/${row.original.uuid}`}
+                >
+                  View product
                 </Link>
               </DropdownMenuItem>
 

@@ -6,6 +6,7 @@ import {
   configPostWithAuthFetch,
 } from '@/config/api/axios-config'
 import { ProductList } from '@/types'
+import { cookies } from 'next/headers'
 
 export async function getStoresAction(input: any) {
   const [column, order] =
@@ -76,8 +77,6 @@ export async function getProductsAction(input: any) {
 }
 
 export async function getStoreAction(storeId: string) {
-  console.log(storeId)
-
   try {
     const customHeaders: HeadersInit = {
       'store-uuid': storeId,
@@ -86,9 +85,7 @@ export async function getStoreAction(storeId: string) {
       endpoint: `/website/admin/clerk/store/`,
       headers: customHeaders,
     })
-    console.log(res.body)
 
-    console.log(res)
     return res.body
   } catch (error: any) {
     console.log(error)
@@ -96,7 +93,58 @@ export async function getStoreAction(storeId: string) {
   }
 }
 
+export async function acceptStoreAction(id: string) {
+  const customHeaders: HeadersInit = {
+    'store-uuid': id,
+  }
+  const res = await configPostWithAuthFetch({
+    endpoint: `/website/admin/store/accept/`,
+    headers: customHeaders,
+  })
+  console.log(res)
+  return res
+}
+
+export async function rejectStoreAction(id: string) {
+  const customHeaders: HeadersInit = {
+    'store-uuid': id,
+  }
+  const res = await configPostWithAuthFetch({
+    endpoint: `/website/admin/store/reject/`,
+    headers: customHeaders,
+  })
+  console.log(res)
+  return res
+}
+
 export async function getCategoryShop() {
   const res = await axiosInstance.get('/website/shop/categories/all/')
   return res.data
+}
+
+export async function getProductAction(productId: string) {
+  const cookieStore = cookies()
+  console.log(productId)
+  const authorization = cookieStore.get('authorization')?.value
+
+  var BearerAuth = authorization ? `Bearer ${authorization}` : null
+  const customHeaders: HeadersInit = {
+    'product-uuid': productId,
+  }
+  if (BearerAuth) {
+    customHeaders['authorization'] = BearerAuth
+  }
+  try {
+    const res = await configGetWithAuthFetch({
+      endpoint: '/website/admin/shop/product/',
+      headers: customHeaders,
+      cache: 'no-cache',
+      tags: ['getEditProduct'],
+    })
+    console.log(res.body)
+    return res.body
+  } catch (error: any) {
+    console.log(error)
+    return error.response.data.message
+  }
 }
