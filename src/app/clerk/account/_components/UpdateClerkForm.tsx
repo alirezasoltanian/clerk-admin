@@ -261,7 +261,10 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
           />
           <FormItem className="">
             <div className="flex-col">
-              <FormLabel>CV File</FormLabel>
+              <FormLabel>
+                {information?.is_accepted_policies ? 'Change' : 'Submit'} CV
+                File
+              </FormLabel>
               <FormControl className="w-fix">
                 {/* {officeImage !== "" && <img src={officeImage} alt="office image" height={50} width={50}/>} */}
                 <div className="flex flex-row gap-1">
@@ -272,9 +275,11 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
                     accept=".pdf"
                     className="ml-2 w-fix accent-slate-800"
                   />
-                  <Link href={information?.resume}>
-                    <Button>See CV File</Button>
-                  </Link>
+                  {information?.resume && (
+                    <Link href={information?.resume}>
+                      <Button>See CV File</Button>
+                    </Link>
+                  )}
                 </div>
               </FormControl>
             </div>
