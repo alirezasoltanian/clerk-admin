@@ -71,7 +71,7 @@ export const clerckForm = z.object({
   //   message: 'Birthday must be in the past',
   // })
   email: z.string().email(),
-  cvFile: z.unknown(),
+  resume: z.unknown(),
   is_accepted_policies: z.boolean(),
 })
 
@@ -81,7 +81,7 @@ export type ClerkForm = {
   description: string
   birthday: string
   email: string
-  cvFile: string
+  resume: string
   image: string
   is_accepted_policies: boolean
 }

@@ -99,7 +99,16 @@ export function SidebarNav({ items }: SidebarNavProps) {
           </span>
         )
       })}
-      <Button className={cn(buttonVariants({ size: 'sm' }))}>
+      <Button
+        className={cn(buttonVariants({ size: 'sm' }))}
+        onClick={async () => {
+          const resStatus = await signOutAction()
+
+          if (resStatus === 200) {
+            router.refresh()
+          }
+        }}
+      >
         <span className={cn('group flex w-full items-center  px-2 py-1 ')}>
           <Icons.logOut className="mr-2 h-4 w-4" aria-hidden="true" />
           <span>Logout</span>

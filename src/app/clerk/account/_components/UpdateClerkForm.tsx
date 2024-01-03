@@ -1,6 +1,10 @@
 'use client'
 
-import { clerkFormAction, deleteClerkProfileImage } from '@/app/_actions/clerk'
+import {
+  clerkFormAction,
+  deleteClerkProfileImage,
+  updateClerkAction,
+} from '@/app/_actions/clerk'
 import { OurFileRouter } from '@/app/api/uploadthing/core'
 import { AlertDialogC } from '@/components/AlertDialog'
 import { Icons } from '@/components/icons'
@@ -45,9 +49,12 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
     defaultValues: {
       name: information ? information.name : '',
       description: information ? information.description : '',
-      birthday: information ? information.birthday : `2024-02-28`,
+      birthday:
+        information && information.birthday
+          ? information.birthday
+          : `2024-02-28`,
       email: information ? information.email : '',
-      cvFile: information ? information.cvFile : '',
+      resume: information ? information.resume : '',
       is_accepted_policies: information
         ? information.is_accepted_policies
         : false,
@@ -58,7 +65,7 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
   const { isUploading, startUpload } = useUploadThing('clerkCV')
 
   const onSubmit = async (data: z.infer<typeof clerckForm>) => {
-    const cvFile = form.watch('cvFile') as File
+    const cvFile = (form.watch('resume') as File[])[0]
 
     console.log(cvFile)
 
@@ -66,14 +73,21 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
 
     console.log(cvRes)
     const sendData = {
-      ...data,
+      name: data.name,
+      birthday: data.birthday,
+      description: data.description,
+      resume: cvRes ? cvRes[0].url : information.resume,
+      email: data.email,
+      is_accepted_policies: data.is_accepted_policies,
     }
+    let res
+    if (information && information.is_accepted_policies)
+      res = await updateClerkAction(sendData)
+    else res = await clerkFormAction(sendData)
 
-    // const res = await clerkFormAction(sendData)
+    console.log(res)
 
-    // console.log(res)
-
-    // toast.message(res.body.message)
+    toast.message(res?.body.message)
   }
   function deleteProfile() {
     startTransition(async () => {
@@ -101,7 +115,9 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
             height={100}
             src={
               information && information?.image
-                ? (information?.image as string)
+                ? (information?.image.split(
+                    'https://api.uritect.top/media/'
+                  )[1] as string)
                 : '/placeholder.png'
             }
             alt="image of social profile"
@@ -250,7 +266,7 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
                 {/* {officeImage !== "" && <img src={officeImage} alt="office image" height={50} width={50}/>} */}
                 <input
                   placeholder=""
-                  {...form.register('cvFile')}
+                  {...form.register('resume')}
                   type="file"
                   accept=".pdf"
                   className="ml-2 w-fix accent-slate-800"
@@ -276,7 +292,10 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
               </div>
             </FormItem>
           )}
-          <Button className="w-fit" disabled={isPending}>
+          <Button
+            className="w-fit"
+            disabled={isPending || !form.watch('is_accepted_policies')}
+          >
             {isPending && (
               <Icons.spinner
                 className="mr-2 h-4 w-4 animate-spin"
