@@ -32,6 +32,7 @@ import { generateReactHelpers } from '@uploadthing/react/hooks'
 import { format, parse } from 'date-fns'
 import { CalendarIcon, Download } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -88,6 +89,7 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
     console.log(res)
 
     toast.message(res?.body.message)
+    if (res?.status === 200 || res?.status === 201) router.refresh()
   }
   function deleteProfile() {
     startTransition(async () => {
@@ -115,9 +117,7 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
             height={100}
             src={
               information && information?.image
-                ? (information?.image.split(
-                    'https://api.uritect.top/media/'
-                  )[1] as string)
+                ? information?.image
                 : '/placeholder.png'
             }
             alt="image of social profile"
@@ -249,7 +249,7 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
                         field.onChange(formattedDate)
                       }}
                       disabled={(date) =>
-                        date < new Date() || date < new Date('1900-01-01')
+                        date > new Date() || date < new Date('1900-01-01')
                       }
                       initialFocus
                     />
@@ -264,16 +264,18 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
               <FormLabel>CV File</FormLabel>
               <FormControl className="w-fix">
                 {/* {officeImage !== "" && <img src={officeImage} alt="office image" height={50} width={50}/>} */}
-                <input
-                  placeholder=""
-                  {...form.register('resume')}
-                  type="file"
-                  accept=".pdf"
-                  className="ml-2 w-fix accent-slate-800"
-                  onChange={(e) => {
-                    // setOfficeImage("");
-                  }}
-                />
+                <div className="flex flex-row gap-1">
+                  <input
+                    placeholder="Upload new resume"
+                    {...form.register('resume')}
+                    type="file"
+                    accept=".pdf"
+                    className="ml-2 w-fix accent-slate-800"
+                  />
+                  <Link href={information?.resume}>
+                    <Button>See CV File</Button>
+                  </Link>
+                </div>
               </FormControl>
             </div>
           </FormItem>
