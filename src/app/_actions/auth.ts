@@ -124,7 +124,7 @@ export const signUpClerkAction = async (data: SignUpType) => {
   const res = await configPostFetch({
     endpoint: `/website/admin/clerk/register/`,
     cache: 'no-cache',
-    variables: data,
+    variables: { ...data, name: '' },
   })
   console.log('clerk signup', res)
   return res
