@@ -113,7 +113,12 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
       console.log(res)
 
       toast.message(res?.body.message)
-      if (res?.status === 200 || res?.status === 201) router.refresh()
+
+      if (res?.status === 200 || res?.status === 201) {
+        console.log('REFRESH !! ! ! !')
+        // router.refresh()
+        router.push('/clerk/account')
+      }
     })
   }
   function deleteProfile() {
