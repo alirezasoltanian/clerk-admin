@@ -1,4 +1,7 @@
-import { getClerkInformationAction } from '@/app/_actions/clerk'
+import {
+  getClerkInformationAction,
+  getClerkInformationCheck,
+} from '@/app/_actions/clerk'
 import {
   PageHeader,
   PageHeaderDescription,
@@ -23,7 +26,10 @@ export const metadata: Metadata = {
 export default async function NewStorePage() {
   // const res = await getTeacherAction();
 
+  const check = await getClerkInformationCheck()
+  console.log(check)
   const res = await getClerkInformationAction()
+  if (res !== null && check !== null) res['image'] = check.image
   console.log(res)
   return (
     <Shell variant="sidebar">

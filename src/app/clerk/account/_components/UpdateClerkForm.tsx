@@ -65,31 +65,56 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
 
   const { isUploading, startUpload } = useUploadThing('clerkCV')
 
-  const onSubmit = async (data: z.infer<typeof clerckForm>) => {
-    const cvFile = (form.watch('resume') as File[])[0]
+  const [isCVUpdated, setIsCVUpdated] = React.useState<boolean>(false)
+  // const [isPending, setIspending] = React.useState<boolean>(false);
+  const onSubmit = (data: z.infer<typeof clerckForm>) => {
+    startTransition(async () => {
+      if (isCVUpdated && !form.watch('resume')) {
+        toast.error('provide any cv file as pdf')
+        return
+      }
 
-    console.log(cvFile)
+      if (
+        information &&
+        information.is_accepted_policies &&
+        !form.watch('resume')
+      ) {
+        toast.error('provide any cv file as pdf')
+        return
+      }
+      let cvRes
+      if (isCVUpdated) {
+        const cvFile = (form.watch('resume') as File[])[0]
 
-    const cvRes = await startUpload([cvFile])
+        console.log(cvFile)
 
-    console.log(cvRes)
-    const sendData = {
-      name: data.name,
-      birthday: data.birthday,
-      description: data.description,
-      resume: cvRes ? cvRes[0].url : information.resume,
-      email: data.email,
-      is_accepted_policies: data.is_accepted_policies,
-    }
-    let res
-    if (information && information.is_accepted_policies)
-      res = await updateClerkAction(sendData)
-    else res = await clerkFormAction(sendData)
+        const _cvRes = await startUpload([cvFile])
 
-    console.log(res)
+        if (_cvRes) {
+          cvRes = _cvRes[0].url
+        }
+        console.log(cvRes)
+      } else {
+        cvRes = information ? information.resume : ''
+      }
+      const sendData = {
+        name: data.name,
+        birthday: data.birthday,
+        description: data.description,
+        resume: cvRes ? cvRes : '',
+        email: data.email,
+        is_accepted_policies: data.is_accepted_policies,
+      }
+      let res
+      if (information && information.is_accepted_policies)
+        res = await updateClerkAction(sendData)
+      else res = await clerkFormAction(sendData)
 
-    toast.message(res?.body.message)
-    if (res?.status === 200 || res?.status === 201) router.refresh()
+      console.log(res)
+
+      toast.message(res?.body.message)
+      if (res?.status === 200 || res?.status === 201) router.refresh()
+    })
   }
   function deleteProfile() {
     startTransition(async () => {
@@ -261,30 +286,39 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
           />
           <FormItem className="">
             <div className="flex-col">
-              <FormLabel>
-                {information?.is_accepted_policies ? 'Change' : 'Submit'} CV
-                File
-              </FormLabel>
               <FormControl className="w-fix">
                 {/* {officeImage !== "" && <img src={officeImage} alt="office image" height={50} width={50}/>} */}
-                <div className="flex flex-row gap-1">
-                  <input
-                    placeholder="Upload new resume"
-                    {...form.register('resume')}
-                    type="file"
-                    accept=".pdf"
-                    className="ml-2 w-fix accent-slate-800"
-                  />
+                <div className="flex flex-row gap-5">
                   {information?.resume && (
                     <Link href={information?.resume}>
-                      <Button>See CV File</Button>
+                      <Button className="h-full">See CV File</Button>
                     </Link>
                   )}
+                  <div className="flex flex-col gap-2">
+                    <FormLabel>
+                      <h3>
+                        {form.watch('is_accepted_policies')
+                          ? 'Change'
+                          : 'Submit'}{' '}
+                        CV File
+                      </h3>
+                    </FormLabel>
+                    <input
+                      placeholder="Upload new resume"
+                      {...form.register('resume')}
+                      type="file"
+                      accept=".pdf"
+                      className="ml-2 w-fix accent-slate-800"
+                      onChange={() => {
+                        setIsCVUpdated(true)
+                      }}
+                    />
+                  </div>
                 </div>
               </FormControl>
             </div>
           </FormItem>
-          {information && !information.is_accepted_policies && (
+          {information && !form.watch('is_accepted_policies') && (
             <FormItem className="">
               <div className="flex">
                 <FormLabel>Accept policies</FormLabel>
@@ -314,16 +348,6 @@ const UpdateClerkForm: React.FC<{ information: ClerkForm }> = ({
           </Button>
         </form>
       </Form>
-      <Button className="w-fit" disabled={true}>
-        {false && (
-          <Icons.spinner
-            className="mr-2 h-4 w-4 animate-spin"
-            aria-hidden="true"
-          />
-        )}
-        submit
-        <span className="sr-only">submit</span>
-      </Button>
     </div>
   )
 }
