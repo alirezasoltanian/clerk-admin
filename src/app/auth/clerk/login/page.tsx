@@ -37,7 +37,7 @@ export default async function SignUpPage() {
               {"Don't you already have an account?  "}
               <Link
                 aria-label="Sign up"
-                href="/auth/sign-up"
+                href="/auth/clerk/signup"
                 className="text-primary underline-offset-4 transition-colors hover:underline"
               >
                 Sign up

@@ -86,6 +86,7 @@ const getClerkInformationAction = async () => {
       cache: 'no-cache',
       tags: ['getClerkAction'],
     })
+
     return res.body
   } catch (error: any) {
     console.log(error)
@@ -93,10 +94,25 @@ const getClerkInformationAction = async () => {
   }
 }
 
+const getClerkInformationCheck = async () => {
+  try {
+    const res = await configGetWithAuthFetch<ClerkForm>({
+      endpoint: `/website/user/information/`,
+      cache: 'no-cache',
+      tags: ['getClerkAction'],
+    })
+
+    return res.body
+  } catch (error: any) {
+    console.log(error)
+    return null
+  }
+}
 export {
   clerkFormAction,
   onSubmitClerkResetImage,
   deleteClerkProfileImage,
   getClerkInformationAction,
   updateClerkAction,
+  getClerkInformationCheck,
 }
