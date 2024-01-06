@@ -102,7 +102,9 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
                 className={cn(
                   status === 'ACCEPTED'
                     ? 'bg-green-300 text-green-600'
-                    : 'bg-red-300 text-red-600',
+                    : status === 'REJECTED'
+                      ? 'bg-red-300 text-red-600'
+                      : 'bg-yellow-300 text-yellow-600',
                   'py-0.5 px-1 rounded-sm text-xs'
                 )}
               >
@@ -171,7 +173,7 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
                         startTransition(() => {
                           row.toggleSelected(false)
                           toast.promise(acceptFunc(row.original.uuid), {
-                            loading: 'Deleting...',
+                            loading: 'accepting...',
                           })
                         })
                       }}
@@ -192,7 +194,7 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
                           row.toggleSelected(false)
 
                           toast.promise(rejectFunc(row.original.uuid), {
-                            loading: 'Deleting...',
+                            loading: 'rejecting...',
                           })
                         })
                       }}
