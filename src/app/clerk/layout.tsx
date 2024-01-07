@@ -52,6 +52,12 @@ export const AdminDashboard: SidebarNavItem[] = [
     icon: 'text',
     items: [],
   },
+  {
+    title: 'DIYs',
+    href: '/clerk/diys',
+    icon: 'text',
+    items: [],
+  },
 ]
 
 export default async function RootLayout({
