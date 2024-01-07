@@ -1,11 +1,12 @@
+'use server'
+
 import React from 'react'
 
-interface Props {}
 const page: React.FC<{
   params: {
     diyid: string
   }
-}> = ({ params }) => {
+}> = async ({ params }) => {
   const diyid = params.diyid
 
   return <div>{diyid}</div>
