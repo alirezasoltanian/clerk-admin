@@ -1,12 +1,7 @@
-import { getClerkAction } from '@/app/_actions/admin'
-import { getStoresAction } from '@/app/_actions/clerk/seller'
+import { getTeacherAction } from '@/app/_actions/clerk/teacher'
 import TeacherInformation from '@/components/clerk/TeacherInformation'
-import { ClerksTableShell } from '@/components/shells/ClerksTableShell'
-import { StoresTableShell } from '@/components/shells/StoresTableShell'
-import { buttonVariants } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import React from 'react'
 
 interface Props {
@@ -14,7 +9,9 @@ interface Props {
     teacherId: string
   }
 }
-function page({ params }: Props) {
+async function page({ params }: Props) {
+  const res = await getTeacherAction()
+  if (!res?.full_name) notFound()
   const teacherId = params.teacherId
   return (
     <div>
@@ -24,7 +21,7 @@ function page({ params }: Props) {
           {/* <DateRangePicker align="end" /> */}
           <div></div>
         </div>
-        <TeacherInformation />
+        <TeacherInformation information={res} />
       </div>
     </div>
   )

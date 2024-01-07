@@ -36,7 +36,7 @@ export const AdminDashboard: SidebarNavItem[] = [
   },
   {
     title: 'Teacher',
-    href: '/clerk/teacher',
+    href: '/clerk/teachers',
     icon: 'text',
     items: [],
   },

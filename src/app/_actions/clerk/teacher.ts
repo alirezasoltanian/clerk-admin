@@ -5,6 +5,7 @@ import {
   configPostWithAuthFetch,
 } from '@/config/api/axios-config'
 import { ProductList } from '@/types'
+import { FormTeacher } from '@/types/teacher'
 
 export async function getTeachersAction(input: any) {
   const [column, order] =
@@ -59,4 +60,18 @@ export async function rejectTeacherAction(id: string) {
   })
   console.log(res)
   return res
+}
+
+export async function getTeacherAction() {
+  try {
+    const res = await configGetWithAuthFetch<FormTeacher>({
+      endpoint: `/website/admin/archschool/teacher/`,
+      cache: 'no-cache',
+      tags: ['getStoreAction'],
+    })
+    return res.body
+  } catch (error: any) {
+    console.log(error)
+    return null
+  }
 }
