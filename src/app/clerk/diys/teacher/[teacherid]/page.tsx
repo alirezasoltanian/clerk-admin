@@ -1,11 +1,12 @@
+'use server'
+
 import React from 'react'
 
-interface Props {}
 const page: React.FC<{
   params: {
     teacherid: string
   }
-}> = ({ params }) => {
+}> = async ({ params }) => {
   const teacherid = params.teacherid
 
   return <div>{teacherid}</div>
