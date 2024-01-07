@@ -36,7 +36,7 @@ export const AdminDashboard: SidebarNavItem[] = [
   },
   {
     title: 'Teacher',
-    href: '/clerk/teacher',
+    href: '/clerk/teachers',
     icon: 'text',
     items: [],
   },
@@ -52,12 +52,12 @@ export const AdminDashboard: SidebarNavItem[] = [
     icon: 'text',
     items: [],
   },
-  {
-    title: 'DIYs',
-    href: '/clerk/diys',
-    icon: 'text',
-    items: [],
-  },
+  // {
+  //   title: 'DIYs',
+  //   href: '/clerk/diys',
+  //   icon: 'text',
+  //   items: [],
+  // },
 ]
 
 export default async function RootLayout({
