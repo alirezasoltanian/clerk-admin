@@ -34,7 +34,7 @@ export default async function DIYPage({ searchParams }: DIYPageProps) {
   return (
     <div className="space-y-6 my-12">
       <div className="flex flex-col gap-4 xs:flex-row xs:items-center xs:justify-between">
-        <h2 className="text-2xl font-bold tracking-tight">Teachers</h2>
+        <h2 className="text-2xl font-bold tracking-tight">DIYs</h2>
         {/* <DateRangePicker align="end" /> */}
       </div>
       <DIYTeacherTableShell data={res.results} pageCount={pageCount} />
