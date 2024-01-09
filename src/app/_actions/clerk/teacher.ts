@@ -62,13 +62,20 @@ export async function rejectTeacherAction(id: string) {
   return res
 }
 
-export async function getTeacherAction() {
+export async function getTeacherAction(id: string) {
+  console.log(id)
+
+  const customHeaders: HeadersInit = {
+    'teacher-uuid': id,
+  }
   try {
     const res = await configGetWithAuthFetch<FormTeacher>({
-      endpoint: `/website/admin/archschool/teacher/`,
+      endpoint: `/website/archschool/teacher/info/`,
       cache: 'no-cache',
       tags: ['getStoreAction'],
+      headers: customHeaders,
     })
+    console.log(res.body)
     return res.body
   } catch (error: any) {
     console.log(error)

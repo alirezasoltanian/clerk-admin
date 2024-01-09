@@ -10,9 +10,9 @@ interface Props {
   }
 }
 async function page({ params }: Props) {
-  const res = await getTeacherAction()
-  if (!res?.full_name) notFound()
   const teacherId = params.teacherId
+  const res = await getTeacherAction(teacherId)
+  // if (!res?.full_name) notFound()
   return (
     <div>
       <div className="space-y-6 my-12">

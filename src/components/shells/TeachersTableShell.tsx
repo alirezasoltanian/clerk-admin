@@ -164,7 +164,7 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[160px] space-y-1">
                 <DropdownMenuItem asChild>
-                  <Link href={`/admin/clerk${slug}`}>View Teacher</Link>
+                  <Link href={`/clerk//teachers/${slug}`}>View Teacher</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href={`/clerk/diys/teacher/${slug}`}>
