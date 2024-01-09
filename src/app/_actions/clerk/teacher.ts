@@ -131,10 +131,10 @@ export async function getDIY(id: string) {
   const customHeaders: HeadersInit = {
     'diy-uuid': id,
   }
-  const res = await configGetWithAuthFetch({
+  const res = await configGetWithAuthFetch<Diy>({
     endpoint: `/website/admin/clerk/archschool/diy/`,
     headers: customHeaders,
   })
 
-  return res.body as Diy
+  return res.body
 }
