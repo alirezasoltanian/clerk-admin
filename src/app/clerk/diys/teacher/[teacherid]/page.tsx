@@ -3,7 +3,7 @@
 import {
   getDIYTeachersAction,
   getTeacherPreview,
-} from '@/app/_actions/clerk/DIY'
+} from '@/app/_actions/clerk/teacher'
 import { DIYTableShell } from '@/components/shells/DIYTableShell'
 import { TeacherPreview } from '@/types/teacher'
 import type { Metadata } from 'next'
