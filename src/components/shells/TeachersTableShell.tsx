@@ -123,14 +123,15 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
           const status: string = row.getValue('status')
           return (
             <div className="">
-              <a
-                className={cn(
-                  buttonVariants({ variant: 'outline', size: 'icon' })
-                )}
-                href={row.original.resume}
+              <Button
+                disabled={row.original.resume === null}
+                variant="outline"
+                size={'icon'}
               >
-                <Download />
-              </a>
+                <a className={''} href={row.original.resume}>
+                  <Download />
+                </a>
+              </Button>
             </div>
           )
         },
