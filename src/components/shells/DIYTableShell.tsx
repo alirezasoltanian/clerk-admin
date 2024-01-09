@@ -14,8 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn, formatDate, formatPrice } from '@/lib/utils'
-import { Seller } from '@/types/seller'
-import { Teacher } from '@/types/teacher'
+import { DIYInShell } from '@/types/DIY'
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type ColumnDef } from '@tanstack/react-table'
 import { Check, Download } from 'lucide-react'
@@ -28,35 +27,11 @@ import { Icons } from '../icons'
 import { Badge } from '../ui/badge'
 import { Button, buttonVariants } from '../ui/button'
 
-interface PostTableShellProps {
-  data: Teacher[]
+const DIYTableShell: React.FC<{
+  data: DIYInShell[]
   pageCount: number
-}
-
-export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
-  const [isPending, startTransition] = React.useTransition()
-
-  const router = useRouter()
-  async function acceptFunc(id: string) {
-    const res = await acceptTeacherAction(id)
-    if (res.status === 204 || 200) {
-      toast.success(res.body.message)
-      router.refresh()
-    } else {
-      toast.error(res.body.message)
-    }
-  }
-  async function rejectFunc(id: string) {
-    const res = await rejectTeacherAction(id)
-    if (res.status === 204 || 200) {
-      toast.success(res.body.message)
-      router.refresh()
-    } else {
-      toast.error(res.body.message)
-    }
-  }
-  // Memoize the columns so they don't re-render on every render
-  const columns = React.useMemo<ColumnDef<Teacher, unknown>[]>(
+}> = ({ data, pageCount }) => {
+  const columns = React.useMemo<ColumnDef<DIYInShell, unknown>[]>(
     () => [
       {
         accessorKey: 'image',
@@ -115,36 +90,6 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
         },
       },
       {
-        accessorKey: 'resume',
-        header: () => {
-          return <div>Resume</div>
-        },
-        cell: ({ row }) => {
-          const status: string = row.getValue('status')
-          return (
-            <div className="">
-              <a
-                className={cn(
-                  buttonVariants({ variant: 'outline', size: 'icon' })
-                )}
-                href={row.original.resume}
-              >
-                <Download />
-              </a>
-            </div>
-          )
-        },
-      },
-
-      {
-        accessorKey: 'created_at',
-        header: ({ column }) => {
-          return <div>image</div>
-        },
-        cell: ({ cell }) => formatDate(cell.getValue() as string | number),
-        enableColumnFilter: false,
-      },
-      {
         id: 'actions',
         cell: ({ row }) => {
           const slug = row.original.uuid
@@ -164,27 +109,22 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[160px] space-y-1">
                 <DropdownMenuItem asChild>
-                  <Link href={`/admin/clerk${slug}`}>View Teacher</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href={`/clerk/diys/teacher/${slug}`}>
-                    {"View Teacher's DIYs"}
-                  </Link>
+                  <Link href={`/clerk/diys/diy/${slug}`}>View DIY</Link>
                 </DropdownMenuItem>
                 {status !== 'ACCEPTED' && (
                   <DropdownMenuItem asChild>
                     <button
-                      onClick={() => {
-                        startTransition(() => {
-                          row.toggleSelected(false)
-                          toast.promise(acceptFunc(row.original.uuid), {
-                            loading: 'accepting...',
-                          })
-                        })
-                      }}
+                      //   onClick={() => {
+                      //     startTransition(() => {
+                      //       row.toggleSelected(false)
+                      //       toast.promise(acceptFunc(row.original.uuid), {
+                      //         loading: 'accepting...',
+                      //       })
+                      //     })
+                      //   }}
                       className="w-full hover:bg-green-300 flex justify-between focus:bg-green-300 bg-green-200"
                     >
-                      <p>Accept teacher</p>
+                      <p>Accept DIY</p>
                       <p className="">
                         <Check size={12} />
                       </p>
@@ -194,18 +134,18 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
                 {status !== 'REJECTED' && (
                   <DropdownMenuItem asChild>
                     <button
-                      onClick={() => {
-                        startTransition(() => {
-                          row.toggleSelected(false)
+                      //   onClick={() => {
+                      //     startTransition(() => {
+                      //       row.toggleSelected(false)
 
-                          toast.promise(rejectFunc(row.original.uuid), {
-                            loading: 'rejecting...',
-                          })
-                        })
-                      }}
+                      //       toast.promise(rejectFunc(row.original.uuid), {
+                      //         loading: 'rejecting...',
+                      //       })
+                      //     })
+                      //   }}
                       className="w-full hover:bg-red-300 flex justify-between focus:bg-red-300 bg-red-200"
                     >
-                      <p>Reject teacher</p>
+                      <p>Reject DIY</p>
                       <p className="">
                         <Icons.close size={12} />
                       </p>
@@ -218,8 +158,10 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
         },
       },
     ],
-    [data, isPending]
+    [data]
   )
 
   return <DataTable columns={columns} data={data} pageCount={pageCount} />
 }
+
+export { DIYTableShell }
