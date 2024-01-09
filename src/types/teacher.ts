@@ -36,3 +36,21 @@ export interface FormTeacher {
   image_url?: string
   banner_url?: string
 }
+
+export interface DIYInShell {
+  uuid: string
+  name: string
+  image: string
+  status: string
+}
+
+export interface TeacherPreview {
+  name: string
+  image: string
+  banner: string
+}
+export interface DIYTeacher {
+  uuid: string
+  name: string
+  image: string
+}

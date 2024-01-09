@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn, formatDate, formatPrice } from '@/lib/utils'
-import { DIYInShell } from '@/types/DIY'
+import { DIYInShell } from '@/types/teacher'
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type ColumnDef } from '@tanstack/react-table'
 import { Check, Download } from 'lucide-react'

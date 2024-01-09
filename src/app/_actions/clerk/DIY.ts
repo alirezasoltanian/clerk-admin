@@ -5,6 +5,7 @@ import {
   configPostWithAuthFetch,
 } from '@/config/api/axios-config'
 import { ProductList } from '@/types'
+import { TeacherPreview } from '@/types/teacher'
 
 export async function getDIYTeachersAction(input: any) {
   const [column, order] =
@@ -35,4 +36,16 @@ export async function getDIYTeachersAction(input: any) {
     console.log(error)
     return error.response.data.message
   }
+}
+
+export async function getTeacherPreview(id: string) {
+  const customHeaders: HeadersInit = {
+    'teacher-uuid': id,
+  }
+  const res = await configGetWithAuthFetch({
+    endpoint: `/website/admin/teacher/${''}/`,
+    headers: customHeaders,
+  })
+  console.log(res)
+  return res.body as TeacherPreview
 }

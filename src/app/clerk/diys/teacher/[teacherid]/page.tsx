@@ -1,7 +1,11 @@
 'use server'
 
-import { getDIYTeachersAction } from '@/app/_actions/clerk/DIY'
+import {
+  getDIYTeachersAction,
+  getTeacherPreview,
+} from '@/app/_actions/clerk/DIY'
 import { DIYTableShell } from '@/components/shells/DIYTableShell'
+import { TeacherPreview } from '@/types/teacher'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import React from 'react'
@@ -36,6 +40,9 @@ const page: React.FC<{
     from,
     to,
   })
+
+  const prvw: TeacherPreview = await getTeacherPreview(teacherid)
+  console.log(prvw)
   console.log(res)
   const pageCount = Math.ceil(res.count / limit)
   return (
@@ -67,10 +74,10 @@ const page: React.FC<{
                 alt="image of social profile"
                 className="object-cover w-full h-full"
               />
+              <h1>TEACHER NAME</h1>
             </div>
           </div>
         </div>
-        <h1>TEACHER NAME</h1>
       </div>
       <DIYTableShell data={res.results} pageCount={pageCount} />
     </div>
