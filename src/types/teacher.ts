@@ -5,6 +5,8 @@ export interface Teacher {
   email: string
   resume: string
   status: string
+  has_diy: boolean
+  has_course: boolean
 }
 
 export interface FormTeacher {

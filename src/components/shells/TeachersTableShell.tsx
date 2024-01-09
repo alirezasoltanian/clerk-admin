@@ -149,6 +149,8 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
         cell: ({ row }) => {
           const slug = row.original.uuid
           const status = row.original.status
+          const hasDIY = row.original.has_diy
+          const hasCourse = row.original.has_course
           // ?.replace("@", `-${Math.random().toString(36).substring(2, 10)}-`)
           // .replace(".com", "");
           return (
@@ -166,11 +168,20 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
                 <DropdownMenuItem asChild>
                   <Link href={`/clerk//teachers/${slug}`}>View Teacher</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href={`/clerk/diys/teacher/${slug}`}>
-                    {"View Teacher's DIYs"}
-                  </Link>
-                </DropdownMenuItem>
+                {hasDIY && (
+                  <DropdownMenuItem asChild>
+                    <Link href={`/clerk/diys/teacher/${slug}`}>
+                      {"View Teacher's DIYs"}
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                {hasCourse && (
+                  <DropdownMenuItem asChild>
+                    <Link href={`/clerk/account`}>
+                      {"View Teacher's Couerses"}
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 {status !== 'ACCEPTED' && (
                   <DropdownMenuItem asChild>
                     <button

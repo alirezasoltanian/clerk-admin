@@ -45,14 +45,16 @@ const page: React.FC<{
 
         {/* <DateRangePicker align="end" /> */}
       </div>
-      <div className="flex flex-row items-center justify-start gap-1">
-        <Image
-          className="rounded-full"
-          src="/placeholder.png"
-          alt=""
-          width={100}
-          height={100}
-        />
+      <div className="flex flex-row items-center justify-start gap-3">
+        <div className="  md:w-32 md:h-32 w-[40%] h-[40%] bg-slate-400 shadow-md  relative rounded-full border-2 overflow-hidden border-white  mt-8 mb-8">
+          <Image
+            width={45}
+            height={45}
+            src={'/placeholder.png'}
+            alt="image of social profile"
+            className="object-cover w-full h-full "
+          />
+        </div>
         <h1>TEACHER NAME</h1>
       </div>
       <DIYTableShell data={res.results} pageCount={pageCount} />
