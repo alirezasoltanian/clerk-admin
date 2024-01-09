@@ -54,7 +54,7 @@ export const AdminDashboard: SidebarNavItem[] = [
   },
   // {
   //   title: 'DIYs',
-  //   href: '/clerk/diys',
+  //   href: '/clerk/teachers/diys',
   //   icon: 'text',
   //   items: [],
   // },

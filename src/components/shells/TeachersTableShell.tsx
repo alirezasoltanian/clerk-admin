@@ -171,7 +171,7 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
                 </DropdownMenuItem>
                 {hasDIY && (
                   <DropdownMenuItem asChild>
-                    <Link href={`/clerk/diys/teacher/${slug}`}>
+                    <Link href={`/clerk/teachers/diys/teacher/${slug}`}>
                       {"View Teacher's DIYs"}
                     </Link>
                   </DropdownMenuItem>
