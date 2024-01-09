@@ -1,5 +1,5 @@
 import { getTeacherAction } from '@/app/_actions/clerk/teacher'
-import { cn } from '@/lib/utils'
+import { cn, formatDate } from '@/lib/utils'
 import { FormTeacher } from '@/types/teacher'
 import { File } from 'lucide-react'
 import Image from 'next/image'
@@ -48,26 +48,64 @@ async function TeacherInformation({
         </div>
       </div>
       <div className="space-y-2 ml-5 mt-2">
-        <h3 className="">Bio : {information.bio}</h3>
-        <div>
-          <h3 className="">Bio : {information.bio}</h3>
-          <h3 className="">Bio : {information.bio}</h3>
+        <h3 className="">Birthday : {formatDate(information.birth_date)}</h3>
+        <div className="flex gap-5">
+          <h3 className="">
+            Graduated university : {information.graduated_university}
+          </h3>
+          <h3 className="">
+            Degree of education : {information.degree_of_education}
+          </h3>
         </div>
 
         <h3 className="">Bio : {information.bio}</h3>
         <h3 className="">
           Description for admin : {information.description_for_admin}
         </h3>
-        <h3 className="mt-3 ml-5">Bio : {information.bio}</h3>
-        <div className="flex gap-2">
+        <div className="flex ">
           <p className="">Teaching Fields :</p>{' '}
-          <div className="flex">
+          <div className="flex gap-2">
             {information.teaching_fields?.map((item, index) => (
               <div className="border-2 rounded px-3 " key={index}>
                 {item}
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="">
+          <div className="grid grid-cols-4 md:w-[70%] w-full *:px-2 *:border-r-2 last:border-r-0">
+            <h3>Place</h3>
+            <h3>Field</h3>
+            <h3>Start</h3>
+            <h3>End</h3>
+          </div>
+          <h3 className="">Studying history : </h3>
+
+          {information?.studying_history?.map((item, index) => (
+            <div
+              className="grid grid-cols-4 md:w-[70%] w-full *:border-r-2  *:px-3 last:border-r-0"
+              key={index}
+            >
+              <div>{formatDate(item.place)}</div>
+              <div>{formatDate(item.field)}</div>
+              <div>{formatDate(item.start)}</div>
+              <div>{formatDate(item.end)}</div>
+            </div>
+          ))}
+          <h3 className="mt-4">Teaching history : </h3>
+
+          {information?.teaching_history?.map((item, index) => (
+            <div
+              className="grid grid-cols-4 md:w-[70%] w-full *:border-r-2  *:px-3 last:border-r-0"
+              key={index}
+            >
+              <div className="">{formatDate(item.place)}</div>
+              <div className="">{formatDate(item.field)}</div>
+              <div className="">{formatDate(item.start)}</div>
+              <div className="">{formatDate(item.end)}</div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
