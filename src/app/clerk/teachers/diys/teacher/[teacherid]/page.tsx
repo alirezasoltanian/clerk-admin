@@ -34,6 +34,7 @@ const page: React.FC<{
   const fromDay = typeof from === 'string' ? new Date(from) : undefined
   const toDay = typeof to === 'string' ? new Date(to) : undefined
   const res = await getDIYTeachersAction({
+    id: teacherid,
     sort,
     limit,
     offset,
@@ -42,8 +43,7 @@ const page: React.FC<{
   })
 
   const prvw: TeacherPreview = await getTeacherPreview(teacherid)
-  console.log(prvw)
-  console.log(res)
+  console.log('prvw', prvw)
   const pageCount = Math.ceil(res.count / limit)
   return (
     <div className="space-y-6 my-12">
@@ -59,7 +59,7 @@ const page: React.FC<{
               <Image
                 width={100}
                 height={100}
-                src={'/placeholder.png'}
+                src={prvw ? prvw.banner : '/placeholder.png'}
                 alt="banner as user Social"
                 className=" absolute w-full h-full"
               />
@@ -70,12 +70,12 @@ const page: React.FC<{
               <Image
                 width={100}
                 height={100}
-                src={'/placeholder.png'}
+                src={prvw ? prvw.image : '/placeholder.png'}
                 alt="image of social profile"
                 className="object-cover w-full h-full"
               />
-              <h1>TEACHER NAME</h1>
             </div>
+            <h1>{prvw ? prvw.name : ''}</h1>
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import {
   configPostWithAuthFetch,
 } from '@/config/api/axios-config'
 import { ProductList } from '@/types'
-import { FormTeacher, TeacherPreview } from '@/types/teacher'
+import { Diy, FormTeacher, TeacherPreview } from '@/types/teacher'
 
 export async function getTeachersAction(input: any) {
   const [column, order] =
@@ -92,18 +92,19 @@ export async function getDIYTeachersAction(input: any) {
   const ordering =
     order === 'desc' ? `-${column}` : order === 'asc' ? column : '-created_at'
   console.log(
-    `/website/admin/clerk/teachers/?ordering=${ordering}&p=${
+    `/website/admin/archschool/teacher/diys/?ordering=${ordering}&p=${
       input.offset + 1
     }&page_size=${input.limit}&search=${input.title}`
   )
 
   try {
     const res = await configGetWithAuthFetch({
-      endpoint: `/website/admin/clerk/teachers/?ordering=${ordering}&p=${
+      endpoint: `/website/admin/archschool/teacher/diys/?ordering=${ordering}&p=${
         input.offset + 1
       }&page_size=${input.limit}&search=${input.title}`,
       cache: 'no-cache',
-      tags: ['getTeachersAction'],
+      tags: ['getTeachersDiyAction'],
+      headers: { 'teacher-uuid': input.id },
     })
     console.log(res)
 
@@ -119,9 +120,21 @@ export async function getTeacherPreview(id: string) {
     'teacher-uuid': id,
   }
   const res = await configGetWithAuthFetch({
-    endpoint: `/website/admin/teacher/${''}/`,
+    endpoint: `/website/archschool/teacher/short/`,
     headers: customHeaders,
   })
   console.log(res)
   return res.body as TeacherPreview
+}
+
+export async function getDIY(id: string) {
+  const customHeaders: HeadersInit = {
+    'diy-uuid': id,
+  }
+  const res = await configGetWithAuthFetch({
+    endpoint: `/website/admin/clerk/archschool/diy/`,
+    headers: customHeaders,
+  })
+
+  return res.body as Diy
 }
