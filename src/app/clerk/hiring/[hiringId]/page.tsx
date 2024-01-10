@@ -13,7 +13,8 @@ interface Props {
 async function page({ params }: Props) {
   const hiringId = params.hiringId
   const res = await getHiringAction(hiringId)
-  clg
+  console.log(res)
+
   if (!res?.full_name) notFound()
 
   return (

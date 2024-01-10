@@ -68,7 +68,7 @@ export async function getHiringAction(id: string) {
   }
   try {
     const res = await configGetWithAuthFetch<Hiring>({
-      endpoint: `/website/clerk/hiring/user/`,
+      endpoint: `/website/admin/clerk/hiring/user/`,
       cache: 'no-cache',
       tags: ['getStoreAction'],
       headers: customHeaders,
