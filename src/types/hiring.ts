@@ -8,11 +8,13 @@ export interface Hiring {
   email: string
   tags: string[]
   about: string
+  banner_url: string
+  image_url: string
   accessibility: string
   is_accepted_policies: boolean
   category_uuid: string
   birth_date: string
-  resume: string
+  resume_url: string
   status: string
 }
 

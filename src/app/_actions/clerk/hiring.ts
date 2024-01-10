@@ -74,8 +74,6 @@ export async function rejectHiringAction(id: string) {
 }
 
 export async function getHiringAction(id: string) {
-  console.log(id)
-
   const customHeaders: HeadersInit = {
     'hiring-uuid': id,
   }
@@ -86,7 +84,7 @@ export async function getHiringAction(id: string) {
       tags: ['getStoreAction'],
       headers: customHeaders,
     })
-    console.log(res.body)
+
     return res.body
   } catch (error: any) {
     console.log(error)

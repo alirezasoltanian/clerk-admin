@@ -12,7 +12,7 @@ interface Props {
 async function page({ params }: Props) {
   const teacherId = params.teacherId
   const res = await getTeacherAction(teacherId)
-  // if (!res?.full_name) notFound()
+  if (!res?.full_name) notFound()
   return (
     <div>
       <div className="space-y-6 my-12">
