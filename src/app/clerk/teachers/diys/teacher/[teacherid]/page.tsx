@@ -8,6 +8,7 @@ import { DIYTableShell } from '@/components/shells/DIYTableShell'
 import { TeacherPreview } from '@/types/teacher'
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 const page: React.FC<{
@@ -34,6 +35,7 @@ const page: React.FC<{
   const fromDay = typeof from === 'string' ? new Date(from) : undefined
   const toDay = typeof to === 'string' ? new Date(to) : undefined
   const res = await getDIYTeachersAction({
+    id: teacherid,
     sort,
     limit,
     offset,
@@ -42,41 +44,35 @@ const page: React.FC<{
   })
 
   const prvw: TeacherPreview = await getTeacherPreview(teacherid)
-  console.log(prvw)
-  console.log(res)
+  console.log('prvw', prvw)
   const pageCount = Math.ceil(res.count / limit)
   return (
     <div className="space-y-6 my-12">
-      <div className="flex flex-col gap-4 xs:flex-row xs:items-center xs:justify-between">
-        <h2 className="text-2xl font-bold tracking-tight">DIYs</h2>
-
-        {/* <DateRangePicker align="end" /> */}
+      <div className=" relative h-[90%] md:h-[50%] aspect-[4/1] border-4">
+        <Image
+          width={100}
+          height={100}
+          src={(prvw.banner as string) ?? ''}
+          alt="banner as user Social"
+          className=" absolute w-full h-full"
+        />
       </div>
-      <div>
-        <div>
-          <div className="aspect-[4/1] relative mt-5 bg-slate-200">
-            {
-              <Image
-                width={100}
-                height={100}
-                src={'/placeholder.png'}
-                alt="banner as user Social"
-                className=" absolute w-full h-full"
-              />
-            }
-          </div>
-          <div className="relative w-fit h-fit">
-            <div className="  md:w-32 md:h-32 w-20 h-20 bg-slate-400 shadow-md  relative rounded-full border-2 overflow-hidden border-white -mt-16 ml-5 ">
-              <Image
-                width={100}
-                height={100}
-                src={'/placeholder.png'}
-                alt="image of social profile"
-                className="object-cover w-full h-full"
-              />
-              <h1>TEACHER NAME</h1>
+      <div className="flex gap-5 mt-7">
+        <div className="rounded-full relative size-32 border-4 overflow-hidden">
+          <Image
+            width={100}
+            height={100}
+            src={(prvw.image as string) ?? ''}
+            alt="banner as user Social"
+            className=" absolute w-full h-full"
+          />
+        </div>
+        <div className="gap-4 flex items-center">
+          <Link href={`/clerk/teachers/${teacherid}`}>
+            <div className="">
+              <h2>{prvw.name}</h2>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
       <DIYTableShell data={res.results} pageCount={pageCount} />

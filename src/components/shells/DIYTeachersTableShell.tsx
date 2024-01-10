@@ -81,7 +81,9 @@ const DIYTeacherTableShell: React.FC<{
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[160px] space-y-1">
                 <DropdownMenuItem asChild>
-                  <Link href={`/clerk/diys/teacher/${slug}`}>Show DIYS</Link>
+                  <Link href={`/clerk/teachers/diys/teacher/${slug}`}>
+                    Show DIYS
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

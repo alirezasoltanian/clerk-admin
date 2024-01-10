@@ -109,7 +109,9 @@ const DIYTableShell: React.FC<{
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[160px] space-y-1">
                 <DropdownMenuItem asChild>
-                  <Link href={`/clerk/diys/diy/${slug}`}>View DIY</Link>
+                  <Link href={`/clerk/teachers/diys/diy/${slug}`}>
+                    View DIY
+                  </Link>
                 </DropdownMenuItem>
                 {status !== 'ACCEPTED' && (
                   <DropdownMenuItem asChild>

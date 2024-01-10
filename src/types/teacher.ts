@@ -54,3 +54,16 @@ export interface DIYTeacher {
   name: string
   image: string
 }
+
+export interface Diy {
+  uuid: string
+  title: string
+  tags: string[]
+  is_published: boolean
+  category_uuid: string
+  subcategory_uuid: string
+  description: string
+  attach_file: string
+  video: string
+  image: string
+}
