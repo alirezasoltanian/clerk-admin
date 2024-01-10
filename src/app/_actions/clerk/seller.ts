@@ -93,7 +93,19 @@ export async function getStoreAction(storeId: string) {
     return error.response.data.message
   }
 }
+export async function clerkStoreAction(action: string, uuid: string) {
+  const endpoint = `/website/admin/store/${action}/`
+  const customHeaders: HeadersInit = {
+    'store-uuid': uuid,
+  }
+  const res = await configPostWithAuthFetch({
+    endpoint: endpoint,
+    headers: customHeaders,
+  })
 
+  console.log('teacher action', res)
+  return res
+}
 export async function acceptStoreAction(id: string) {
   const customHeaders: HeadersInit = {
     'store-uuid': id,

@@ -36,6 +36,19 @@ export async function getHiringUsersAction(input: any) {
   }
 }
 
+export async function clerkHiringAction(action: string, uuid: string) {
+  const endpoint = `/website/admin/hiring/user/${action}/`
+  const customHeaders: HeadersInit = {
+    'hiring-uuid': uuid,
+  }
+  const res = await configPostWithAuthFetch({
+    endpoint: endpoint,
+    headers: customHeaders,
+  })
+
+  console.log('teacher action', res)
+  return res
+}
 export async function acceptHiringAction(id: string) {
   const customHeaders: HeadersInit = {
     'hiring-uuid': id,

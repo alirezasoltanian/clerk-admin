@@ -38,6 +38,19 @@ export async function getTeachersAction(input: any) {
   }
 }
 
+export async function clerkTeacherAction(action: string, uuid: string) {
+  const endpoint = `/website/admin/teacher/${action}/`
+  const customHeaders: HeadersInit = {
+    'teacher-uuid': uuid,
+  }
+  const res = await configPostWithAuthFetch({
+    endpoint: endpoint,
+    headers: customHeaders,
+  })
+
+  console.log('teacher action', res)
+  return res
+}
 export async function acceptTeacherAction(id: string) {
   const customHeaders: HeadersInit = {
     'teacher-uuid': id,

@@ -2,6 +2,7 @@
 
 import {
   acceptHiringAction,
+  clerkHiringAction,
   rejectHiringAction,
 } from '@/app/_actions/clerk/hiring'
 import { DataTable } from '@/components/data-table/data-table'
@@ -45,6 +46,15 @@ export function HiringTableShell({ data, pageCount }: PostTableShellProps) {
   }
   async function rejectFunc(id: string) {
     const res = await rejectHiringAction(id)
+    if (res.status === 204 || 200) {
+      toast.success(res.body.message)
+      router.refresh()
+    } else {
+      toast.error(res.body.message)
+    }
+  }
+  async function actionFunc(action: string, id: string) {
+    const res = await clerkHiringAction(action, id)
     if (res.status === 204 || 200) {
       toast.success(res.body.message)
       router.refresh()
@@ -172,9 +182,12 @@ export function HiringTableShell({ data, pageCount }: PostTableShellProps) {
                       onClick={() => {
                         startTransition(() => {
                           row.toggleSelected(false)
-                          toast.promise(acceptFunc(row.original.uuid), {
-                            loading: 'accepting...',
-                          })
+                          toast.promise(
+                            actionFunc('accept', row.original.uuid),
+                            {
+                              loading: 'accepting...',
+                            }
+                          )
                         })
                       }}
                       className="w-full hover:bg-green-300 flex justify-between focus:bg-green-300 bg-green-200"
@@ -193,9 +206,12 @@ export function HiringTableShell({ data, pageCount }: PostTableShellProps) {
                         startTransition(() => {
                           row.toggleSelected(false)
 
-                          toast.promise(rejectFunc(row.original.uuid), {
-                            loading: 'rejecting...',
-                          })
+                          toast.promise(
+                            actionFunc('reject', row.original.uuid),
+                            {
+                              loading: 'rejecting...',
+                            }
+                          )
                         })
                       }}
                       className="w-full hover:bg-red-300 flex justify-between focus:bg-red-300 bg-red-200"

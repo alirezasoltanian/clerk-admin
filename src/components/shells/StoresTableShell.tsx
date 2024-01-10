@@ -3,6 +3,7 @@
 import { acceptClerkAction, rejectClerkAction } from '@/app/_actions/admin'
 import {
   acceptStoreAction,
+  clerkStoreAction,
   rejectStoreAction,
 } from '@/app/_actions/clerk/seller'
 import { DataTable } from '@/components/data-table/data-table'
@@ -46,6 +47,15 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
   }
   async function rejectStore(id: string) {
     const res = await rejectStoreAction(id)
+    if (res.status === 204 || 200) {
+      toast.success(res.body.message)
+      router.refresh()
+    } else {
+      toast.error(res.body.message)
+    }
+  }
+  async function actionFunc(action: string, id: string) {
+    const res = await clerkStoreAction(action, id)
     if (res.status === 204 || 200) {
       toast.success(res.body.message)
       router.refresh()
@@ -158,7 +168,7 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
                 {status !== 'ACCEPTED' && (
                   <DropdownMenuItem asChild>
                     <button
-                      onClick={() => acceptStore(slug)}
+                      onClick={() => actionFunc('accept', slug)}
                       className="w-full hover:bg-green-300 flex justify-between focus:bg-green-300 bg-green-200"
                     >
                       <p>Accept store</p>
@@ -171,7 +181,7 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
                 {status !== 'REJECTED' && (
                   <DropdownMenuItem asChild>
                     <button
-                      onClick={() => rejectStore(slug)}
+                      onClick={() => actionFunc('reject', slug)}
                       className="w-full hover:bg-red-300 flex justify-between focus:bg-red-300 bg-red-200"
                     >
                       <p>Reject store</p>
