@@ -38,24 +38,6 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
   const [isPending, startTransition] = React.useTransition()
 
   const router = useRouter()
-  async function acceptFunc(id: string) {
-    const res = await acceptTeacherAction(id)
-    if (res.status === 204 || 200) {
-      toast.success(res.body.message)
-      router.refresh()
-    } else {
-      toast.error(res.body.message)
-    }
-  }
-  async function rejectFunc(id: string) {
-    const res = await rejectTeacherAction(id)
-    if (res.status === 204 || 200) {
-      toast.success(res.body.message)
-      router.refresh()
-    } else {
-      toast.error(res.body.message)
-    }
-  }
 
   async function actionFunc(action: string, id: string) {
     const res = await clerkTeacherAction(action, id)

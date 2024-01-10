@@ -106,29 +106,6 @@ export async function clerkStoreAction(action: string, uuid: string) {
   console.log('teacher action', res)
   return res
 }
-export async function acceptStoreAction(id: string) {
-  const customHeaders: HeadersInit = {
-    'store-uuid': id,
-  }
-  const res = await configPostWithAuthFetch({
-    endpoint: `/website/admin/store/accept/`,
-    headers: customHeaders,
-  })
-  console.log(res)
-  return res
-}
-
-export async function rejectStoreAction(id: string) {
-  const customHeaders: HeadersInit = {
-    'store-uuid': id,
-  }
-  const res = await configPostWithAuthFetch({
-    endpoint: `/website/admin/store/reject/`,
-    headers: customHeaders,
-  })
-  console.log(res)
-  return res
-}
 
 export async function getCategoryShop() {
   const res = await axiosInstance.get('/website/shop/categories/all/')
@@ -191,28 +168,4 @@ export async function getSellersAction(input: any) {
     console.log(error)
     return error.response.data.message
   }
-}
-
-export async function acceptSellerAction(id: string) {
-  const customHeaders: HeadersInit = {
-    'seller-uuid': id,
-  }
-  const res = await configPostWithAuthFetch({
-    endpoint: `/website/admin/seller/accept/`,
-    headers: customHeaders,
-  })
-  console.log(res)
-  return res
-}
-
-export async function rejectSellerAction(id: string) {
-  const customHeaders: HeadersInit = {
-    'seller-uuid': id,
-  }
-  const res = await configPostWithAuthFetch({
-    endpoint: `/website/admin/seller/reject/`,
-    headers: customHeaders,
-  })
-  console.log(res)
-  return res
 }

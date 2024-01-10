@@ -51,28 +51,6 @@ export async function clerkTeacherAction(action: string, uuid: string) {
   console.log('teacher action', res)
   return res
 }
-export async function acceptTeacherAction(id: string) {
-  const customHeaders: HeadersInit = {
-    'teacher-uuid': id,
-  }
-  const res = await configPostWithAuthFetch({
-    endpoint: `/website/admin/teacher/accept/`,
-    headers: customHeaders,
-  })
-
-  return res
-}
-
-export async function rejectTeacherAction(id: string) {
-  const customHeaders: HeadersInit = {
-    'teacher-uuid': id,
-  }
-  const res = await configPostWithAuthFetch({
-    endpoint: `/website/admin/teacher/reject/`,
-    headers: customHeaders,
-  })
-  return res
-}
 
 export async function getTeacherAction(id: string) {
   console.log(id)

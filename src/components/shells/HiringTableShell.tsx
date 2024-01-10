@@ -35,24 +35,7 @@ export function HiringTableShell({ data, pageCount }: PostTableShellProps) {
   const [isPending, startTransition] = React.useTransition()
 
   const router = useRouter()
-  async function acceptFunc(id: string) {
-    const res = await acceptHiringAction(id)
-    if (res.status === 204 || 200) {
-      toast.success(res.body.message)
-      router.refresh()
-    } else {
-      toast.error(res.body.message)
-    }
-  }
-  async function rejectFunc(id: string) {
-    const res = await rejectHiringAction(id)
-    if (res.status === 204 || 200) {
-      toast.success(res.body.message)
-      router.refresh()
-    } else {
-      toast.error(res.body.message)
-    }
-  }
+
   async function actionFunc(action: string, id: string) {
     const res = await clerkHiringAction(action, id)
     if (res.status === 204 || 200) {

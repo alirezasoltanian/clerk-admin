@@ -49,29 +49,6 @@ export async function clerkHiringAction(action: string, uuid: string) {
   console.log('teacher action', res)
   return res
 }
-export async function acceptHiringAction(id: string) {
-  const customHeaders: HeadersInit = {
-    'hiring-uuid': id,
-  }
-  const res = await configPostWithAuthFetch({
-    endpoint: `/website/admin/hiring/user/accept/`,
-    headers: customHeaders,
-  })
-  console.log(res)
-
-  return res
-}
-
-export async function rejectHiringAction(id: string) {
-  const customHeaders: HeadersInit = {
-    'hiring-uuid': id,
-  }
-  const res = await configPostWithAuthFetch({
-    endpoint: `/website/admin/hiring/user/reject/`,
-    headers: customHeaders,
-  })
-  return res
-}
 
 export async function getHiringAction(id: string) {
   const customHeaders: HeadersInit = {

@@ -36,24 +36,7 @@ export function SellersTableShell({ data, pageCount }: PostTableShellProps) {
   const [isPending, startTransition] = React.useTransition()
 
   const router = useRouter()
-  async function acceptFunc(id: string) {
-    const res = await acceptSellerAction(id)
-    if (res.status === 204 || 200) {
-      toast.success(res.body.message)
-      router.refresh()
-    } else {
-      toast.error(res.body.message)
-    }
-  }
-  async function rejectFunc(id: string) {
-    const res = await rejectSellerAction(id)
-    if (res.status === 204 || 200) {
-      toast.success(res.body.message)
-      router.refresh()
-    } else {
-      toast.error(res.body.message)
-    }
-  }
+
   // Memoize the columns so they don't re-render on every render
   const columns = React.useMemo<ColumnDef<Seller, unknown>[]>(
     () => [
