@@ -3,6 +3,7 @@
 import { acceptClerkAction, rejectClerkAction } from '@/app/_actions/admin'
 import {
   acceptTeacherAction,
+  clerkDIYAction,
   rejectTeacherAction,
 } from '@/app/_actions/clerk/teacher'
 import { DataTable } from '@/components/data-table/data-table'
@@ -31,6 +32,19 @@ const DIYTableShell: React.FC<{
   data: DIYInShell[]
   pageCount: number
 }> = ({ data, pageCount }) => {
+  const [isPending, startTransition] = React.useTransition()
+
+  const router = useRouter()
+
+  const actionFunction = async (action: string, uuid: string) => {
+    const res = await clerkDIYAction(action, uuid)
+    if (res.status === 204 || 200) {
+      toast.success(res.body.message)
+      router.refresh()
+    } else {
+      toast.error(res.body.message)
+    }
+  }
   const columns = React.useMemo<ColumnDef<DIYInShell, unknown>[]>(
     () => [
       {
@@ -116,14 +130,19 @@ const DIYTableShell: React.FC<{
                 {status !== 'ACCEPTED' && (
                   <DropdownMenuItem asChild>
                     <button
-                      //   onClick={() => {
-                      //     startTransition(() => {
-                      //       row.toggleSelected(false)
-                      //       toast.promise(acceptFunc(row.original.uuid), {
-                      //         loading: 'accepting...',
-                      //       })
-                      //     })
-                      //   }}
+                      onClick={() => {
+                        startTransition(() => {
+                          console.log('a')
+
+                          row.toggleSelected(false)
+                          toast.promise(
+                            actionFunction('accept', row.original.uuid),
+                            {
+                              loading: 'accepting...',
+                            }
+                          )
+                        })
+                      }}
                       className="w-full hover:bg-green-300 flex justify-between focus:bg-green-300 bg-green-200"
                     >
                       <p>Accept DIY</p>
@@ -136,15 +155,18 @@ const DIYTableShell: React.FC<{
                 {status !== 'REJECTED' && (
                   <DropdownMenuItem asChild>
                     <button
-                      //   onClick={() => {
-                      //     startTransition(() => {
-                      //       row.toggleSelected(false)
-
-                      //       toast.promise(rejectFunc(row.original.uuid), {
-                      //         loading: 'rejecting...',
-                      //       })
-                      //     })
-                      //   }}
+                      onClick={() => {
+                        console.log('r')
+                        startTransition(() => {
+                          row.toggleSelected(false)
+                          toast.promise(
+                            actionFunction('reject', row.original.uuid),
+                            {
+                              loading: 'rejecting...',
+                            }
+                          )
+                        })
+                      }}
                       className="w-full hover:bg-red-300 flex justify-between focus:bg-red-300 bg-red-200"
                     >
                       <p>Reject DIY</p>

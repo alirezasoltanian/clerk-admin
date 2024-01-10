@@ -105,7 +105,7 @@ export async function getDIYTeachersAction(input: any) {
       tags: ['getTeachersDiyAction'],
       headers: { 'teacher-uuid': input.id },
     })
-    console.log(res)
+    console.log((res.body as any).results)
 
     return res.body
   } catch (error: any) {
@@ -136,4 +136,18 @@ export async function getDIY(id: string) {
   })
 
   return res.body
+}
+
+export async function clerkDIYAction(action: string, uuid: string) {
+  const endpoint = `/website/admin/archschool/diy/${action}/`
+  const customHeaders: HeadersInit = {
+    'diy-uuid': uuid,
+  }
+  const res = await configPostWithAuthFetch({
+    endpoint: endpoint,
+    headers: customHeaders,
+  })
+
+  console.log('diy action', res)
+  return res
 }
