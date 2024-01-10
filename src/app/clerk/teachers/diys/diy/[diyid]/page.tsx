@@ -9,6 +9,7 @@ import { Diy } from '@/types/teacher'
 import { Download } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
+import DIYAction from './_components/DIYAction'
 
 const page: React.FC<{
   params: {
@@ -35,10 +36,21 @@ const page: React.FC<{
           <h2 className="text-2xl font-bold tracking-tight">{res.title}</h2>
           <h2
             className={`${
-              res.is_published ? 'bg-green-100' : 'bg-red-100'
+              res.is_published ? 'bg-green-100' : 'bg-gray-400'
             } p-2 rounded-lg`}
           >
-            {res.is_published ? 'PUBLISHED' : 'Unpublished'}
+            {res.is_published
+              ? 'Published'.toUpperCase()
+              : 'Unpublished'.toUpperCase()}
+          </h2>
+          <h2
+            className={`
+            ${res.status === 'ACCEPTED' ? 'bg-green-100' : ''}
+            ${res.status === 'REJECTED' ? 'bg-red-100' : ''}
+            ${res.status === 'NOT_DECIDED' ? 'bg-yellow-100' : ''}
+            p-2 rounded-lg`}
+          >
+            {res.status}
           </h2>
         </div>
       </div>
@@ -104,20 +116,8 @@ const page: React.FC<{
           </div>
         </div>
       </div>
-      <div className="flex flex-row items-start justify-between gap-6 w-[100%]">
-        <div className="flex flex-row gap-3 w-full">
-          <Button variant={`default`} disabled={res.status === 'REJECTED'}>
-            {'Reject DIY'}
-          </Button>
-          <Button variant={`default`} disabled={res.status === 'ACCEPTED'}>
-            {'Accept DIY'}
-          </Button>
-        </div>
-        <div className="w-full">
-          {res.is_published && (
-            <Button variant={`default`}>{'Make DIY Unpublished'}</Button>
-          )}
-        </div>
+      <div className="p-4">
+        <DIYAction status={res.status} uuid={diyid} />
       </div>
     </div>
   )
