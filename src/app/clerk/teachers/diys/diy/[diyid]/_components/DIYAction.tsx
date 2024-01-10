@@ -1,5 +1,6 @@
 'use client'
 
+import { clerkDIYAction } from '@/app/_actions/clerk/teacher'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -10,12 +11,15 @@ const DIYAction: React.FC<{
 }> = ({ status, uuid }) => {
   const router = useRouter()
 
-  const onAccept = () => {
-    console.log('ACCEPTED', uuid)
+  const onAccept = async () => {
+    const res = await clerkDIYAction('accept', uuid)
+    console.log(res)
     router.refresh()
   }
-  const onReject = () => {
+  const onReject = async () => {
     console.log('REJECTED', uuid)
+    const res = await clerkDIYAction('reject', uuid)
+    console.log(res)
     router.refresh()
   }
   return (

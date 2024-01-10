@@ -137,3 +137,17 @@ export async function getDIY(id: string) {
 
   return res.body
 }
+
+export async function clerkDIYAction(action: string, uuid: string) {
+  const endpoint = `/website/admin/archschool/diy/${action}/`
+  const customHeaders: HeadersInit = {
+    'diy-uuid': uuid,
+  }
+  const res = await configPostWithAuthFetch({
+    endpoint: endpoint,
+    headers: customHeaders,
+  })
+
+  console.log('diy action', res)
+  return res
+}
