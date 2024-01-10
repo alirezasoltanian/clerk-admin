@@ -1,11 +1,38 @@
+'use client'
+
+import { clerkHiringAction } from '@/app/_actions/clerk/hiring'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { cn, formatDate } from '@/lib/utils'
 import { Hiring } from '@/types/hiring'
-import { File } from 'lucide-react'
+import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import { Check, File } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
-import { buttonVariants } from '../ui/button'
+import { toast } from 'sonner'
+import { Icons } from '../icons'
+import { Button, buttonVariants } from '../ui/button'
 
 function HiringInformation({ information }: { information: Hiring }) {
+  const [isPending, startTransition] = React.useTransition()
+
+  const router = useRouter()
+
+  async function actionFunc(action: 'accept' | 'reject', id: string) {
+    const res = await clerkHiringAction(action, id)
+    if (res.status === 204 || 200) {
+      toast.success(res.body.message)
+      router.refresh()
+    } else {
+      toast.error(res.body.message)
+    }
+  }
   return (
     <div>
       <div className=" relative h-[90%] md:h-[50%] bg-slate-400 aspect-[4/1] border-4">
@@ -28,10 +55,72 @@ function HiringInformation({ information }: { information: Hiring }) {
           />
         </div>
         <div className="gap-4 flex items-center">
-          <div className="">
-            <h2>{information.full_name}</h2>
-            <h3>{information.email}</h3>
-            <h3>{information.phone}</h3>
+          <div className="flex items-center ">
+            <div className="">
+              <h2>{information.full_name}</h2>
+              <h3>{information.email}</h3>
+              <h3>{information.phone}</h3>
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  aria-label="Open menu"
+                  variant="ghost"
+                  className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                >
+                  <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[160px] space-y-1">
+                {information.status !== 'ACCEPTED' && (
+                  <DropdownMenuItem asChild>
+                    <button
+                      onClick={() => {
+                        startTransition(() => {
+                          // row.toggleSelected(false)
+                          toast.promise(
+                            actionFunc('accept', information.uuid),
+                            {
+                              loading: 'accepting...',
+                            }
+                          )
+                        })
+                      }}
+                      className="w-full hover:bg-green-300 flex justify-between focus:bg-green-300 bg-green-200"
+                    >
+                      <p>Accept </p>
+                      <p className="">
+                        <Check size={12} />
+                      </p>
+                    </button>
+                  </DropdownMenuItem>
+                )}
+                {information.status !== 'REJECTED' && (
+                  <DropdownMenuItem asChild>
+                    <button
+                      onClick={() => {
+                        startTransition(() => {
+                          // row.toggleSelected(false)
+
+                          toast.promise(
+                            actionFunc('reject', information.uuid),
+                            {
+                              loading: 'rejecting...',
+                            }
+                          )
+                        })
+                      }}
+                      className="w-full hover:bg-red-300 flex justify-between focus:bg-red-300 bg-red-200"
+                    >
+                      <p>Reject </p>
+                      <p className="">
+                        <Icons.close size={12} />
+                      </p>
+                    </button>
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           {information.resume_url && (
             <a
@@ -46,19 +135,17 @@ function HiringInformation({ information }: { information: Hiring }) {
       </div>
       <div className="space-y-2 ml-5 mt-2">
         <div className="flex flex-wrap">
+          <h3>Profession : </h3> <p>{information.profession}</p>
+        </div>
+        <div className="flex flex-wrap">
           <h3>Birthday : </h3> <p>{formatDate(information.birth_date)}</p>
         </div>
-        <div className="flex gap-5">
-          <div className="flex flex-wrap">
-            <h3>Graduated university :</h3>{' '}
-            <p>{formatDate(information.graduated_university)}</p>
-          </div>
-          <div className="flex flex-wrap">
-            <h3>Degree of education :</h3>{' '}
-            <p>{formatDate(information.degree_of_education)}</p>
-          </div>
+        <div className="flex flex-wrap">
+          <h3>Country / City : </h3>{' '}
+          <p>
+            {information.country} / {information.city}
+          </p>
         </div>
-
         <div className="flex flex-wrap">
           <h3>Bio :</h3>
           {'  '}
@@ -80,9 +167,6 @@ function HiringInformation({ information }: { information: Hiring }) {
               </div>
             ))}
           </div>
-        </div>
-        <div className="flex flex-wrap">
-          <h3>Profession : </h3> <p>{information.profession}</p>
         </div>
       </div>
     </div>

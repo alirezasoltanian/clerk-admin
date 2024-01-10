@@ -16,6 +16,7 @@ export interface Hiring {
   birth_date: string
   resume_url: string
   status: string
+  description_for_admin: string
 }
 
 interface hiringTable {

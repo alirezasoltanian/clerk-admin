@@ -1,10 +1,6 @@
 'use client'
 
-import {
-  acceptHiringAction,
-  clerkHiringAction,
-  rejectHiringAction,
-} from '@/app/_actions/clerk/hiring'
+import { clerkHiringAction } from '@/app/_actions/clerk/hiring'
 import { DataTable } from '@/components/data-table/data-table'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import {
@@ -114,11 +110,11 @@ export function HiringTableShell({ data, pageCount }: PostTableShellProps) {
           return (
             <div className="">
               <Button
-                disabled={row.original.resume === null}
+                disabled={row.original.resume_url === null}
                 variant="outline"
                 size={'icon'}
               >
-                <a className={''} href={row.original.resume}>
+                <a className={''} href={row.original.resume_url}>
                   <Download />
                 </a>
               </Button>

@@ -1,11 +1,6 @@
 'use client'
 
-import { acceptClerkAction, rejectClerkAction } from '@/app/_actions/admin'
-import {
-  acceptTeacherAction,
-  clerkTeacherAction,
-  rejectTeacherAction,
-} from '@/app/_actions/clerk/teacher'
+import { clerkTeacherAction } from '@/app/_actions/clerk/teacher'
 import { DataTable } from '@/components/data-table/data-table'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import {
