@@ -66,4 +66,6 @@ export interface Diy {
   attach_file: string
   video: string
   image: string
+  date: string
+  status: 'ACCEPTED' | 'REJECTED' | 'NOT_DECIDED'
 }

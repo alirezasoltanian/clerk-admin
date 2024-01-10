@@ -106,7 +106,7 @@ export async function getDIYTeachersAction(input: any) {
       tags: ['getTeachersDiyAction'],
       headers: { 'teacher-uuid': input.id },
     })
-    console.log(res)
+    console.log((res.body as any).results)
 
     return res.body
   } catch (error: any) {
