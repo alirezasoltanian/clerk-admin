@@ -1,10 +1,7 @@
 'use client'
 
 import { acceptClerkAction, rejectClerkAction } from '@/app/_actions/admin'
-import {
-  acceptSellerAction,
-  rejectSellerAction,
-} from '@/app/_actions/clerk/seller'
+import { clerkSellerAction } from '@/app/_actions/clerk/seller'
 import { DataTable } from '@/components/data-table/data-table'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import {
@@ -37,6 +34,15 @@ export function SellersTableShell({ data, pageCount }: PostTableShellProps) {
 
   const router = useRouter()
 
+  async function actionFunc(action: 'accept' | 'reject', id: string) {
+    const res = await clerkSellerAction(action, id)
+    if (res.status === 204 || 200) {
+      toast.success(res.body.message)
+      router.refresh()
+    } else {
+      toast.error(res.body.message)
+    }
+  }
   // Memoize the columns so they don't re-render on every render
   const columns = React.useMemo<ColumnDef<Seller, unknown>[]>(
     () => [
@@ -152,9 +158,12 @@ export function SellersTableShell({ data, pageCount }: PostTableShellProps) {
                       onClick={() => {
                         startTransition(() => {
                           row.toggleSelected(false)
-                          toast.promise(acceptFunc(row.original.uuid), {
-                            loading: 'Deleting...',
-                          })
+                          toast.promise(
+                            actionFunc('accept', row.original.uuid),
+                            {
+                              loading: 'Deleting...',
+                            }
+                          )
                         })
                       }}
                       className="w-full hover:bg-green-300 flex justify-between focus:bg-green-300 bg-green-200"
@@ -173,9 +182,12 @@ export function SellersTableShell({ data, pageCount }: PostTableShellProps) {
                         startTransition(() => {
                           row.toggleSelected(false)
 
-                          toast.promise(rejectFunc(row.original.uuid), {
-                            loading: 'Deleting...',
-                          })
+                          toast.promise(
+                            actionFunc('reject', row.original.uuid),
+                            {
+                              loading: 'Deleting...',
+                            }
+                          )
                         })
                       }}
                       className="w-full hover:bg-red-300 flex justify-between focus:bg-red-300 bg-red-200"

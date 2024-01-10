@@ -54,7 +54,7 @@ export function StoresTableShell({ data, pageCount }: PostTableShellProps) {
       toast.error(res.body.message)
     }
   }
-  async function actionFunc(action: string, id: string) {
+  async function actionFunc(action: 'accept' | 'reject', id: string) {
     const res = await clerkStoreAction(action, id)
     if (res.status === 204 || 200) {
       toast.success(res.body.message)

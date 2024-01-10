@@ -39,7 +39,7 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
 
   const router = useRouter()
 
-  async function actionFunc(action: string, id: string) {
+  async function actionFunc(action: 'accept' | 'reject', id: string) {
     const res = await clerkTeacherAction(action, id)
     if (res.status === 204 || 200) {
       toast.success(res.body.message)

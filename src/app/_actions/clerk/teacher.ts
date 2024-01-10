@@ -38,7 +38,10 @@ export async function getTeachersAction(input: any) {
   }
 }
 
-export async function clerkTeacherAction(action: string, uuid: string) {
+export async function clerkTeacherAction(
+  action: 'accept' | 'reject',
+  uuid: string
+) {
   const endpoint = `/website/admin/teacher/${action}/`
   const customHeaders: HeadersInit = {
     'teacher-uuid': uuid,
@@ -129,7 +132,10 @@ export async function getDIY(id: string) {
   return res.body
 }
 
-export async function clerkDIYAction(action: string, uuid: string) {
+export async function clerkDIYAction(
+  action: 'accept' | 'reject',
+  uuid: string
+) {
   const endpoint = `/website/admin/archschool/diy/${action}/`
   const customHeaders: HeadersInit = {
     'diy-uuid': uuid,

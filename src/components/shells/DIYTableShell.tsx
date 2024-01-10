@@ -36,7 +36,7 @@ const DIYTableShell: React.FC<{
 
   const router = useRouter()
 
-  const actionFunction = async (action: string, uuid: string) => {
+  const actionFunction = async (action: 'accept' | 'reject', uuid: string) => {
     const res = await clerkDIYAction(action, uuid)
     if (res.status === 204 || 200) {
       toast.success(res.body.message)

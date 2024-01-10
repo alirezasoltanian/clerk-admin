@@ -36,7 +36,10 @@ export async function getHiringUsersAction(input: any) {
   }
 }
 
-export async function clerkHiringAction(action: string, uuid: string) {
+export async function clerkHiringAction(
+  action: 'accept' | 'reject',
+  uuid: string
+) {
   const endpoint = `/website/admin/hiring/user/${action}/`
   const customHeaders: HeadersInit = {
     'hiring-uuid': uuid,

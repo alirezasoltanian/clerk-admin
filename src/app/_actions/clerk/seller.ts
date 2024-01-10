@@ -93,7 +93,10 @@ export async function getStoreAction(storeId: string) {
     return error.response.data.message
   }
 }
-export async function clerkStoreAction(action: string, uuid: string) {
+export async function clerkStoreAction(
+  action: 'accept' | 'reject',
+  uuid: string
+) {
   const endpoint = `/website/admin/store/${action}/`
   const customHeaders: HeadersInit = {
     'store-uuid': uuid,
@@ -168,4 +171,21 @@ export async function getSellersAction(input: any) {
     console.log(error)
     return error.response.data.message
   }
+}
+
+export async function clerkSellerAction(
+  action: 'accept' | 'reject',
+  uuid: string
+) {
+  const endpoint = `website/admin/seller/${action}/`
+  const customHeaders: HeadersInit = {
+    'seller-uuid': uuid,
+  }
+  const res = await configPostWithAuthFetch({
+    endpoint: endpoint,
+    headers: customHeaders,
+  })
+
+  console.log('teacher action', res)
+  return res
 }
