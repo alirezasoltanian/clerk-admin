@@ -1,5 +1,6 @@
 import { getHiringAction } from '@/app/_actions/clerk/hiring'
 import { getTeacherAction } from '@/app/_actions/clerk/teacher'
+import HiringInformation from '@/components/clerk/HiringInformation'
 import TeacherInformation from '@/components/clerk/TeacherInformation'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -25,8 +26,8 @@ async function page({ params }: Props) {
             Hiring user : {res?.full_name}
           </h2>
           {/* <DateRangePicker align="end" /> */}
-          <div></div>
         </div>
+        <HiringInformation information={res} />
       </div>
     </div>
   )
