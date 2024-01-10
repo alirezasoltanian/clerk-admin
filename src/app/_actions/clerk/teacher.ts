@@ -46,7 +46,7 @@ export async function acceptTeacherAction(id: string) {
     endpoint: `/website/admin/teacher/accept/`,
     headers: customHeaders,
   })
-  console.log(res)
+
   return res
 }
 
@@ -58,7 +58,6 @@ export async function rejectTeacherAction(id: string) {
     endpoint: `/website/admin/teacher/reject/`,
     headers: customHeaders,
   })
-  console.log(res)
   return res
 }
 

@@ -1,10 +1,9 @@
 'use client'
 
-import { acceptClerkAction, rejectClerkAction } from '@/app/_actions/admin'
 import {
-  acceptTeacherAction,
-  rejectTeacherAction,
-} from '@/app/_actions/clerk/teacher'
+  acceptHiringAction,
+  rejectHiringAction,
+} from '@/app/_actions/clerk/hiring'
 import { DataTable } from '@/components/data-table/data-table'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import {
@@ -13,11 +12,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { cn, formatDate, formatPrice } from '@/lib/utils'
-import { Seller } from '@/types/seller'
-import { Teacher } from '@/types/teacher'
+import { cn, formatDate } from '@/lib/utils'
+import { Hiring } from '@/types/hiring'
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { type ColumnDef } from '@tanstack/react-table'
+import { ColumnDef } from '@tanstack/react-table'
 import { Check, Download } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -25,20 +23,19 @@ import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 import { Icons } from '../icons'
-import { Badge } from '../ui/badge'
-import { Button, buttonVariants } from '../ui/button'
+import { Button } from '../ui/button'
 
 interface PostTableShellProps {
-  data: Teacher[]
+  data: Hiring[]
   pageCount: number
 }
 
-export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
+export function HiringTableShell({ data, pageCount }: PostTableShellProps) {
   const [isPending, startTransition] = React.useTransition()
 
   const router = useRouter()
   async function acceptFunc(id: string) {
-    const res = await acceptTeacherAction(id)
+    const res = await acceptHiringAction(id)
     if (res.status === 204 || 200) {
       toast.success(res.body.message)
       router.refresh()
@@ -47,7 +44,7 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
     }
   }
   async function rejectFunc(id: string) {
-    const res = await rejectTeacherAction(id)
+    const res = await rejectHiringAction(id)
     if (res.status === 204 || 200) {
       toast.success(res.body.message)
       router.refresh()
@@ -56,7 +53,7 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
     }
   }
   // Memoize the columns so they don't re-render on every render
-  const columns = React.useMemo<ColumnDef<Teacher, unknown>[]>(
+  const columns = React.useMemo<ColumnDef<Hiring, unknown>[]>(
     () => [
       {
         accessorKey: 'image',
@@ -84,7 +81,7 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
         },
       },
       {
-        accessorKey: 'name',
+        accessorKey: 'full_name',
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Name" />
         ),
@@ -150,8 +147,7 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
         cell: ({ row }) => {
           const slug = row.original.uuid
           const status = row.original.status
-          const hasDIY = row.original.has_diy
-          const hasCourse = row.original.has_course
+
           // ?.replace("@", `-${Math.random().toString(36).substring(2, 10)}-`)
           // .replace(".com", "");
           return (
@@ -167,22 +163,9 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[160px] space-y-1">
                 <DropdownMenuItem asChild>
-                  <Link href={`/clerk/teachers/${slug}`}>View Teacher</Link>
+                  <Link href={`/clerk/hiring/${slug}`}>View User</Link>
                 </DropdownMenuItem>
-                {hasDIY && (
-                  <DropdownMenuItem asChild>
-                    <Link href={`/clerk/teachers/diys/teacher/${slug}`}>
-                      {"View Teacher's DIYs"}
-                    </Link>
-                  </DropdownMenuItem>
-                )}
-                {hasCourse && (
-                  <DropdownMenuItem asChild>
-                    <Link href={`/clerk/account`}>
-                      {"View Teacher's Couerses"}
-                    </Link>
-                  </DropdownMenuItem>
-                )}
+
                 {status !== 'ACCEPTED' && (
                   <DropdownMenuItem asChild>
                     <button
@@ -196,7 +179,7 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
                       }}
                       className="w-full hover:bg-green-300 flex justify-between focus:bg-green-300 bg-green-200"
                     >
-                      <p>Accept teacher</p>
+                      <p>Accept </p>
                       <p className="">
                         <Check size={12} />
                       </p>
@@ -217,7 +200,7 @@ export function TeachersTableShell({ data, pageCount }: PostTableShellProps) {
                       }}
                       className="w-full hover:bg-red-300 flex justify-between focus:bg-red-300 bg-red-200"
                     >
-                      <p>Reject teacher</p>
+                      <p>Reject </p>
                       <p className="">
                         <Icons.close size={12} />
                       </p>
